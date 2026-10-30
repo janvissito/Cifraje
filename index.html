@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aplicació web moderna i interactiva per xifrar i desxifrar textos utilitzant Inversió de text, Xifratge Cèsar i Codi Morse amb reproducció d'àudio Web Audio API.">
+  <meta name="description"
+    content="Aplicació web moderna i interactiva per xifrar i desxifrar textos utilitzant Inversió de text, Xifratge Cèsar i Codi Morse amb reproducció d'àudio Web Audio API.">
   <meta name="theme-color" content="#0b0f19">
   <title>Cifratge Web | Eina Interactiva de Xifratge i Codi Morse</title>
-  
+  <link rel="icon" type="image/png" href="logoo.png">
+
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- Ambient background glow elements -->
   <div class="glow-orb orb-1" aria-hidden="true"></div>
@@ -26,7 +32,8 @@
     <div class="header-container">
       <div class="brand">
         <div class="brand-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
@@ -59,25 +66,29 @@
 
   <main class="main-content">
     <div class="container">
-      
+
       <!-- Algorithm Navigation Tabs -->
       <nav class="algo-tabs" role="tablist" aria-label="Algoritmes de xifratge">
-        <button id="tab-cesar" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-workbench" data-algo="cesar">
+        <button id="tab-cesar" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-workbench"
+          data-algo="cesar">
           <span class="tab-icon">🏛️</span>
           <span class="tab-label">Xifratge Cèsar</span>
           <span class="tab-tag">Clàssic</span>
         </button>
-        <button id="tab-morse" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench" data-algo="morse">
+        <button id="tab-morse" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
+          data-algo="morse">
           <span class="tab-icon">📡</span>
           <span class="tab-label">Codi Morse</span>
           <span class="tab-tag">So & Llum</span>
         </button>
-        <button id="tab-inversio" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench" data-algo="inversio">
+        <button id="tab-inversio" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
+          data-algo="inversio">
           <span class="tab-icon">🔄</span>
           <span class="tab-label">Inversió de Text</span>
           <span class="tab-tag">Involutiu</span>
         </button>
-        <button id="tab-multi" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench" data-algo="multi">
+        <button id="tab-multi" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
+          data-algo="multi">
           <span class="tab-icon">⚡</span>
           <span class="tab-label">Multixifratge</span>
           <span class="tab-tag">Tots 3</span>
@@ -86,7 +97,7 @@
 
       <!-- Main Workbench Card -->
       <section id="panel-workbench" class="workbench-card">
-        
+
         <!-- Algorithm Info Bar -->
         <div class="algo-info-bar">
           <div class="algo-info-text">
@@ -137,7 +148,7 @@
               <div class="param-title-wrap">
                 <span class="param-icon">🔢</span>
                 <label for="caesar-shift-slider" class="param-label">
-                  Desplaçament (<span class="code-font">k</span>): 
+                  Desplaçament (<span class="code-font">k</span>):
                   <strong id="caesar-shift-value" class="highlight-val">3</strong>
                 </label>
               </div>
@@ -146,17 +157,20 @@
                 <button id="btn-caesar-plus" class="btn-chip" title="Sumar 1">+1</button>
                 <button id="btn-caesar-rot13" class="btn-chip" title="Aplicar ROT13 (k=13)">ROT-13</button>
                 <button id="btn-caesar-reset" class="btn-chip" title="Reiniciar a 3">Per defecte (3)</button>
-                <button id="btn-caesar-bruteforce" class="btn-chip btn-chip-accent" title="Veure tots els 25 desplaçaments">
+                <button id="btn-caesar-bruteforce" class="btn-chip btn-chip-accent"
+                  title="Veure tots els 25 desplaçaments">
                   🔍 Força Bruta
                 </button>
               </div>
             </div>
-            
+
             <div class="slider-row">
               <span class="slider-min">1</span>
-              <input type="range" id="caesar-shift-slider" min="1" max="25" value="3" class="custom-range" aria-label="Desplaçament del xifratge Cèsar">
+              <input type="range" id="caesar-shift-slider" min="1" max="25" value="3" class="custom-range"
+                aria-label="Desplaçament del xifratge Cèsar">
               <span class="slider-max">25</span>
-              <input type="number" id="caesar-shift-number" min="1" max="25" value="3" class="num-input" aria-label="Valor numèric de desplaçament">
+              <input type="number" id="caesar-shift-number" min="1" max="25" value="3" class="num-input"
+                aria-label="Valor numèric de desplaçament">
             </div>
 
             <!-- Interactive Caesar Alphabet Strip -->
@@ -202,12 +216,14 @@
                 </div>
                 <div class="audio-setting-item">
                   <label for="morse-freq-slider">Freqüència: <span id="morse-freq-val">650</span> Hz</label>
-                  <input type="range" id="morse-freq-slider" min="400" max="950" step="25" value="650" class="custom-range range-sm">
+                  <input type="range" id="morse-freq-slider" min="400" max="950" step="25" value="650"
+                    class="custom-range range-sm">
                 </div>
               </div>
             </div>
             <div class="morse-tip">
-              ℹ️ <em>Nota:</em> La codificació normalitza automàticament accents i caràcters diacrítics (Unicode NFKD). Paraules separades per <code>/</code> i caràcters per espai.
+              ℹ️ <em>Nota:</em> La codificació normalitza automàticament accents i caràcters diacrítics (Unicode NFKD).
+              Paraules separades per <code>/</code> i caràcters per espai.
             </div>
           </div>
 
@@ -232,21 +248,23 @@
               </div>
             </div>
             <div class="morse-tip">
-              ℹ️ <em>Propietat involutiva:</em> Aplicar la inversió al resultat desxifra el text exactament al seu estat original ($f(f(x)) = x$).
+              ℹ️ <em>Propietat involutiva:</em> Aplicar la inversió al resultat desxifra el text exactament al seu estat
+              original ($f(f(x)) = x$).
             </div>
           </div>
 
           <!-- Multi-cipher comparison notice -->
           <div id="params-multi" class="algo-params-panel hidden">
             <div class="multi-notice">
-              ⚡ <strong>Mode Multixifratge:</strong> Introdueix un text i visualitza instantàniament com es xifra o desxifra amb els tres algoritmes alhora.
+              ⚡ <strong>Mode Multixifratge:</strong> Introdueix un text i visualitza instantàniament com es xifra o
+              desxifra amb els tres algoritmes alhora.
             </div>
           </div>
         </div>
 
         <!-- The Core Two-Column Conversion Grid -->
         <div id="standard-conversion-view" class="conversion-grid">
-          
+
           <!-- Input Card -->
           <div class="io-card">
             <div class="io-header">
@@ -278,13 +296,8 @@
             </div>
 
             <div class="io-textarea-wrap">
-              <textarea 
-                id="text-input" 
-                class="io-textarea" 
-                placeholder="Escriu o enganxa el text aquí..."
-                spellcheck="false"
-                rows="7"
-              >Hola, món! Aquest és un missatge secret.</textarea>
+              <textarea id="text-input" class="io-textarea" placeholder="Escriu o enganxa el text aquí..."
+                spellcheck="false" rows="7">Hola, món! Aquest és un missatge secret.</textarea>
             </div>
 
             <div class="io-footer">
@@ -337,13 +350,8 @@
             </div>
 
             <div class="io-textarea-wrap">
-              <textarea 
-                id="text-output" 
-                class="io-textarea code-font output-textarea" 
-                placeholder="El resultat apareixerà aquí..." 
-                readonly
-                rows="7"
-              ></textarea>
+              <textarea id="text-output" class="io-textarea code-font output-textarea"
+                placeholder="El resultat apareixerà aquí..." readonly rows="7"></textarea>
             </div>
 
             <div class="io-footer">
@@ -410,7 +418,8 @@
             <div class="info-card-icon">🏛️</div>
             <h4 class="info-card-title">Xifratge Cèsar</h4>
             <p class="info-card-text">
-              Substitució monoalfabètica històrica emprada per Juli Cèsar. Cada lletra es desplaça $k$ posicions mòdul 26:
+              Substitució monoalfabètica històrica emprada per Juli Cèsar. Cada lletra es desplaça $k$ posicions mòdul
+              26:
             </p>
             <div class="formula-box">
               C = (P + k) mod 26
@@ -422,19 +431,22 @@
             <div class="info-card-icon">📡</div>
             <h4 class="info-card-title">Codi Morse</h4>
             <p class="info-card-text">
-              Codificació telegràfica binària de punts (<span class="code-font">.</span>) i ratlles (<span class="code-font">-</span>).
+              Codificació telegràfica binària de punts (<span class="code-font">.</span>) i ratlles (<span
+                class="code-font">-</span>).
             </p>
             <div class="formula-box">
               Lletres separades per ' ' i paraules per ' / '
             </div>
-            <p class="info-card-sub">Descomposició NFKD automàtica per transformar caràcters com <code>è, à, ç</code> en lletres base Morse.</p>
+            <p class="info-card-sub">Descomposició NFKD automàtica per transformar caràcters com <code>è, à, ç</code> en
+              lletres base Morse.</p>
           </div>
 
           <div class="info-card">
             <div class="info-card-icon">🔄</div>
             <h4 class="info-card-title">Inversió de Text</h4>
             <p class="info-card-text">
-              Reverteix completament la cadena de caràcters d'extrem a extrem (<span class="code-font">text[::-1]</span>).
+              Reverteix completament la cadena de caràcters d'extrem a extrem (<span
+                class="code-font">text[::-1]</span>).
             </p>
             <div class="formula-box">
               f(f(x)) = x (Funció involutiva)
@@ -448,7 +460,8 @@
   </main>
 
   <!-- Modal: Brute Force Caesar -->
-  <div id="modal-bruteforce" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-bf-title">
+  <div id="modal-bruteforce" class="modal-backdrop hidden" role="dialog" aria-modal="true"
+    aria-labelledby="modal-bf-title">
     <div class="modal-window">
       <div class="modal-header">
         <div class="modal-title-wrap">
@@ -459,7 +472,8 @@
       </div>
       <div class="modal-body">
         <p class="modal-hint">
-          S'estan provant tots els 25 desplaçaments possibles sobre el text actual. Fes clic sobre qualsevol opció per carregar-la immediatament com a resultat!
+          S'estan provant tots els 25 desplaçaments possibles sobre el text actual. Fes clic sobre qualsevol opció per
+          carregar-la immediatament com a resultat!
         </p>
         <div id="bruteforce-results-list" class="bruteforce-list"></div>
       </div>
@@ -467,7 +481,8 @@
   </div>
 
   <!-- Modal: Morse Reference Table -->
-  <div id="modal-morse" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-morse-title">
+  <div id="modal-morse" class="modal-backdrop hidden" role="dialog" aria-modal="true"
+    aria-labelledby="modal-morse-title">
     <div class="modal-window modal-wide">
       <div class="modal-header">
         <div class="modal-title-wrap">
@@ -541,4 +556,5 @@
   <!-- App Script -->
   <script src="script.js"></script>
 </body>
+
 </html>
