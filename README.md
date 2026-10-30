@@ -63,11 +63,20 @@ El projecte està implementat únicament amb la llibreria estàndard de Python, 
 
 L'aplicació compta amb una interfície web moderna i interactiva, accessible directament des de qualsevol navegador web (Chrome, Firefox, Safari, Edge) sense necessitat de servidors ni dependències externes.
 
-* **Com obrir-la:**
-  * Obre directament el fitxer [index.html](file:///c:/Users/User/Cifraje/index.html) fent-hi doble clic o arrossegant-lo a la finestra del teu navegador.
-  * O serveix-la amb qualsevol servidor web local (per exemple amb Python: `python -m http.server 8000` i accedeix a `http://localhost:8000`).
+* **Com executar el servidor amb registre de visites:**
+  * Executa el servidor Python integrat:
+    ```bash
+    python server.py
+    ```
+  * Obre el teu navegador a:
+    * **Aplicació Web:** [http://localhost:8000](http://localhost:8000)
+    * **Panell de Dades de Visitants:** [http://localhost:8000/dades](http://localhost:8000/dades)
+    * **Fitxer JSON directe:** [http://localhost:8000/dades.json](http://localhost:8000/dades.json)
 
-* **Característiques de la versió Web:**
+* **Característiques de la versió Web i Servidor:**
+  * **Comptador de visites en temps real:** Situat a la capçalera superior de la web, s'actualitza en viu.
+  * **Registre de dades (`dades.json`):** Desa automàticament cada visitant amb el seu identificador d'usuari, país, regió, ciutat, data i hora exacta d'accés, i adreça IP.
+  * **Panell `/dades`:** Visualització gràfica de les visites, mètriques (visites totals, usuaris únics, països) i botó de descàrrega directa del fitxer `.json`.
   * **Interfície Gràfica Moderna:** Disseny Cyber-Dark amb estil glassmorphism i transicions suaus.
   * **Xifratge en Temps Real:** Conversió automàtica instantània mentre escrius.
   * **Xifratge Cèsar:** Slider interactiu de desplaçament ($k \in [1, 25]$), botó ROT-13, visualitzador dinàmic de l'abecedari i **Desxifrador per Força Bruta** (mostra els 25 desplaçaments possibles alhora).

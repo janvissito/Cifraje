@@ -966,4 +966,86 @@ document.addEventListener('DOMContentLoaded', () => {
   populateMorseTable();
   renderHistory();
   performConversion();
+
+  // =========================================================================
+  // 15. SISTEMA DE REGISTRE DE VISITANTS I COMPTADOR EN TEMPS REAL (/dades)
+  // =========================================================================
+  const liveVisitsCountElem = document.getElementById('live-visits-count');
+
+  async function registrarVisita() {
+    // 1. Obtenir o crear l'identificador d'usuari
+    let usuari = localStorage.getItem('cifratge_nom_usuari');
+    if (!usuari) {
+      usuari = `Usuari-${Math.floor(1000 + Math.random() * 9000)}`;
+      localStorage.setItem('cifratge_nom_usuari', usuari);
+    }
+
+    // 2. Detectar geolocalització (país, regió, ciutat)
+    let geo = {
+      pais: 'Espanya',
+      regio: 'Catalunya',
+      ciutat: 'Barcelona'
+    };
+
+    // Intentar geolocalització per IP pública client-side amb fallback ràpid
+    try {
+      const geoResp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+      if (geoResp.ok) {
+        const geoData = await geoResp.json();
+        if (geoData.country_name) geo.pais = geoData.country_name;
+        if (geoData.region) geo.regio = geoData.region;
+        if (geoData.city) geo.ciutat = geoData.city;
+      }
+    } catch (e) {
+      // Fallback: usar timezone del navegador
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz && tz.includes('/')) {
+          geo.ciutat = tz.split('/')[1].replace(/_/g, ' ');
+          geo.regio = tz.split('/')[0];
+        }
+      } catch (err) {}
+    }
+
+    // 3. Enviar dades al servidor HTTP local (/api/visita)
+    try {
+      const resp = await fetch('/api/visita', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          usuari: usuari,
+          pais: geo.pais,
+          regio: geo.regio,
+          ciutat: geo.ciutat,
+          dispositiu: `${navigator.platform || 'Desktop'} • ${navigator.userAgent.split(' ')[0]}`
+        })
+      });
+
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data && typeof data.total_visites === 'number' && liveVisitsCountElem) {
+          liveVisitsCountElem.textContent = data.total_visites;
+        }
+      }
+    } catch (err) {
+      // Mode estàtic
+    }
+  }
+
+  async function actualitzarComptadorVisites() {
+    try {
+      const resp = await fetch('/api/visites');
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data && typeof data.total_visites === 'number' && liveVisitsCountElem) {
+          liveVisitsCountElem.textContent = data.total_visites;
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Executar registre inicial i poller en temps real
+  registrarVisita();
+  setInterval(actualitzarComptadorVisites, 4000);
 });
+
