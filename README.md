@@ -59,7 +59,25 @@ El projecte està implementat únicament amb la llibreria estàndard de Python, 
 
 ## Instruccions d'ús
 
-### 1. Execució interactiva (Consola)
+### 1. Aplicació Web (Navegador) 🌐
+
+L'aplicació compta amb una interfície web moderna i interactiva, accessible directament des de qualsevol navegador web (Chrome, Firefox, Safari, Edge) sense necessitat de servidors ni dependències externes.
+
+* **Com obrir-la:**
+  * Obre directament el fitxer [index.html](file:///c:/Users/User/Cifraje/index.html) fent-hi doble clic o arrossegant-lo a la finestra del teu navegador.
+  * O serveix-la amb qualsevol servidor web local (per exemple amb Python: `python -m http.server 8000` i accedeix a `http://localhost:8000`).
+
+* **Característiques de la versió Web:**
+  * **Interfície Gràfica Moderna:** Disseny Cyber-Dark amb estil glassmorphism i transicions suaus.
+  * **Xifratge en Temps Real:** Conversió automàtica instantània mentre escrius.
+  * **Xifratge Cèsar:** Slider interactiu de desplaçament ($k \in [1, 25]$), botó ROT-13, visualitzador dinàmic de l'abecedari i **Desxifrador per Força Bruta** (mostra els 25 desplaçaments possibles alhora).
+  * **Codi Morse Interactiu:** Reproducció d'àudio sintetitzat mitjançant la **Web Audio API** amb velocitat (WPM) i to (Hz) configurables, indicador lluminós de transmissió (LED òptic) i taula de referència completa.
+  * **Multixifratge:** Panell comparatiu per visualitzar els 3 algoritmes alhora.
+  * **Utilitats:** Botó per intercanviar entrada/sortida (Swap), copiar al porta-retalls en un clic, descarregar el resultat en fitxer `.txt` i historial local de conversions.
+
+---
+
+### 2. Execució interactiva (Consola de terminal) 💻
 
 Executa el fitxer principal des del terminal:
 
@@ -88,7 +106,7 @@ Tria una opció (1-4):
 
 ---
 
-### 2. Ús com a mòdul de Python
+### 3. Ús com a mòdul de Python
 
 També pots importar les funcions directament als teus propis scripts de Python:
 
