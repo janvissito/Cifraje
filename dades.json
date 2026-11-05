@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": 1,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:25:48",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 2,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:26:13",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 3,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:26:26",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 4,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:26:59",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 5,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:27:13",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 6,
+    "usuari": "Usuari-2291",
+    "pais": "Spain",
+    "regio": "Catalonia",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-03 18:27:40",
+    "ip": "127.0.0.1",
+    "dispositiu": "Linux x86_64 • Mozilla/5.0"
+  },
+  {
+    "id": 7,
+    "usuari": "TestScript",
+    "pais": "Catalunya",
+    "regio": "Catalunya",
+    "ciutat": "Barcelona",
+    "data_hora": "2026-11-05 18:07:25",
+    "ip": "127.0.0.1",
+    "dispositiu": "curl/8.5.0"
+  }
+]
