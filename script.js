@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Intentar geolocalización por IP pública client-side con fallback rápido
     try {
-      const geoResp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+      const geoResp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(1500) });
       if (geoResp.ok) {
         const geoData = await geoResp.json();
         if (geoData.country_name) geo.pais = geoData.country_name;
@@ -959,7 +959,11 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {}
     }
 
+<<<<<<< HEAD
     // 3. Enviar datos al servidor HTTP local (/api/visita)
+=======
+    // 3. Enviar dades al servidor HTTP (/api/visita)
+>>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
     try {
       const resp = await fetch('/api/visita', {
         method: 'POST',
@@ -978,9 +982,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data && typeof data.total_visites === 'number' && liveVisitsCountElem) {
           liveVisitsCountElem.textContent = data.total_visites;
         }
+      } else {
+        const errData = await resp.json().catch(() => ({}));
+        console.warn('[Cifratge Web] Error en registrar visita:', resp.status, errData);
       }
     } catch (err) {
+<<<<<<< HEAD
       // Modo estático
+=======
+      console.warn('[Cifratge Web] No s\'ha pogut connectar amb /api/visita:', err);
+>>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
     }
   }
 

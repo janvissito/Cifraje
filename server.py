@@ -21,6 +21,24 @@ PORT = 8000
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dades.json")
 
 
+def comprovar_permisos():
+    """Comprova si el servidor té permisos d'escriptura per desar dades."""
+    dir_path = os.path.dirname(os.path.abspath(DATA_FILE))
+    usuari_execucio = os.getenv("USER") or os.getenv("USERNAME") or "desconegut"
+
+    if not os.access(dir_path, os.W_OK):
+        print(f"⚠️  [ALERTA DE PERMISOS]: L'usuari '{usuari_execucio}' no té permís d'escriptura a la carpeta '{dir_path}'!", file=sys.stderr)
+        print(f"    👉 Solució al servidor: sudo chown -R {usuari_execucio}:{usuari_execucio} {dir_path}", file=sys.stderr)
+        print(f"    👉 Permisos recomanats:  sudo chmod 775 {dir_path}", file=sys.stderr)
+        return False
+    elif os.path.exists(DATA_FILE) and not os.access(DATA_FILE, os.W_OK):
+        print(f"⚠️  [ALERTA DE PERMISOS]: L'usuari '{usuari_execucio}' no pot escriure al fitxer '{DATA_FILE}'!", file=sys.stderr)
+        print(f"    👉 Solució al servidor: sudo chown {usuari_execucio}:{usuari_execucio} {DATA_FILE}", file=sys.stderr)
+        print(f"    👉 Permisos recomanats:  sudo chmod 664 {DATA_FILE}", file=sys.stderr)
+        return False
+    return True
+
+
 def carregar_dades():
     """Carga la lista de visitas desde dades.json."""
     if not os.path.exists(DATA_FILE):
@@ -42,8 +60,13 @@ def desar_dades(dades):
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(dades, f, ensure_ascii=False, indent=2)
         return True
+    except PermissionError as e:
+        dir_path = os.path.dirname(os.path.abspath(DATA_FILE))
+        print(f"❌ [Error de Permisos a desar_dades]: No es pot escriure a '{DATA_FILE}': {e}", file=sys.stderr)
+        print(f"    👉 Executa al servidor: sudo chown -R $USER:$USER {dir_path} && sudo chmod 664 {DATA_FILE}", file=sys.stderr)
+        return False
     except Exception as e:
-        print(f"[Error desar_dades]: {e}", file=sys.stderr)
+        print(f"❌ [Error desar_dades]: {e}", file=sys.stderr)
         return False
 
 
@@ -374,10 +397,20 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 body = {}
 
+<<<<<<< HEAD
             # IP del cliente
             client_ip = self.client_address[0]
             if "x-forwarded-for" in self.headers:
                 client_ip = self.headers["x-forwarded-for"].split(",")[0].strip()
+=======
+            # IP del client (compatibilitat directa, Apache mod_proxy, Nginx i Cloudflare)
+            client_ip = (
+                self.headers.get("CF-Connecting-IP") or
+                (self.headers.get("X-Forwarded-For") or "").split(",")[0].strip() or
+                self.headers.get("X-Real-IP") or
+                self.client_address[0]
+            )
+>>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
 
             # Fecha y hora exacta
             ara = datetime.now()
@@ -399,7 +432,20 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             visites = carregar_dades()
             nou_registre["id"] = len(visites) + 1
             visites.append(nou_registre)
-            desar_dades(visites)
+            exit_guardar = desar_dades(visites)
+
+            if not exit_guardar:
+                print(f"❌ [ERROR CRÍTIC]: No s'ha pogut desar la visita a '{DATA_FILE}'. Comprova els permisos d'escriptura!", file=sys.stderr)
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                resp = {
+                    "status": "error",
+                    "message": f"Error de permisos al servidor: no es pot escriure a '{DATA_FILE}'. Revisa els permisos del fitxer (chown)."
+                }
+                self.wfile.write(json.dumps(resp, ensure_ascii=False).encode("utf-8"))
+                return
 
             resp = {
                 "status": "success",
@@ -428,19 +474,39 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def iniciar_servidor():
+<<<<<<< HEAD
     """Inicia el servidor HTTP en PORT."""
     # Inicializar dades.json si no existe
+=======
+    """Inicia el servidor HTTP a PORT."""
+    # Verificar permisos d'escriptura per a dades.json
+    permisos_ok = comprovar_permisos()
+
+    # Inicialitzar dades.json si no existeix
+>>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
     if not os.path.exists(DATA_FILE):
-        desar_dades([])
+        if permisos_ok:
+            desar_dades([])
+        else:
+            print(f"⚠️  No s'ha pogut crear '{DATA_FILE}' inicialment a causa dels permisos.", file=sys.stderr)
 
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), CifratgeRequestHandler) as httpd:
+        usuari = os.getenv("USER") or os.getenv("USERNAME") or "sistema"
         print("=" * 60)
         print("🚀 SERVIDOR WEB DE CIFRADO EN FUNCIONAMIENTO")
         print("=" * 60)
+<<<<<<< HEAD
         print(f"👉 Aplicación Web:          http://localhost:{PORT}")
         print(f"👉 Registro de Datos:       http://localhost:{PORT}/dades")
         print(f"👉 Archivo JSON de datos:   {DATA_FILE}")
+=======
+        print(f"👉 Aplicació Web:          http://localhost:{PORT}")
+        print(f"👉 Registre de Dades:      http://localhost:{PORT}/dades")
+        print(f"👉 Fitxer JSON de dades:   {DATA_FILE}")
+        print(f"👉 Usuari del procés:      {usuari}")
+        print(f"👉 Estat dels permisos:    {'✅ Lectura/Escriptura OK' if permisos_ok else '❌ SENSE PERMÍS D ESCRIPTURA'}")
+>>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
         print("=" * 60)
         print("Pulsa Ctrl+C para detener el servidor.\n")
         try:
