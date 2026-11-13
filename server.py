@@ -397,12 +397,6 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 body = {}
 
-<<<<<<< HEAD
-            # IP del cliente
-            client_ip = self.client_address[0]
-            if "x-forwarded-for" in self.headers:
-                client_ip = self.headers["x-forwarded-for"].split(",")[0].strip()
-=======
             # IP del client (compatibilitat directa, Apache mod_proxy, Nginx i Cloudflare)
             client_ip = (
                 self.headers.get("CF-Connecting-IP") or
@@ -410,7 +404,6 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.headers.get("X-Real-IP") or
                 self.client_address[0]
             )
->>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
 
             # Fecha y hora exacta
             ara = datetime.now()
@@ -474,16 +467,11 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def iniciar_servidor():
-<<<<<<< HEAD
-    """Inicia el servidor HTTP en PORT."""
-    # Inicializar dades.json si no existe
-=======
     """Inicia el servidor HTTP a PORT."""
     # Verificar permisos d'escriptura per a dades.json
     permisos_ok = comprovar_permisos()
 
     # Inicialitzar dades.json si no existeix
->>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
     if not os.path.exists(DATA_FILE):
         if permisos_ok:
             desar_dades([])
@@ -496,17 +484,11 @@ def iniciar_servidor():
         print("=" * 60)
         print("🚀 SERVIDOR WEB DE CIFRADO EN FUNCIONAMIENTO")
         print("=" * 60)
-<<<<<<< HEAD
-        print(f"👉 Aplicación Web:          http://localhost:{PORT}")
-        print(f"👉 Registro de Datos:       http://localhost:{PORT}/dades")
-        print(f"👉 Archivo JSON de datos:   {DATA_FILE}")
-=======
         print(f"👉 Aplicació Web:          http://localhost:{PORT}")
         print(f"👉 Registre de Dades:      http://localhost:{PORT}/dades")
         print(f"👉 Fitxer JSON de dades:   {DATA_FILE}")
         print(f"👉 Usuari del procés:      {usuari}")
         print(f"👉 Estat dels permisos:    {'✅ Lectura/Escriptura OK' if permisos_ok else '❌ SENSE PERMÍS D ESCRIPTURA'}")
->>>>>>> e718aaf213c1c9a865930e1a83c7b41231543d0a
         print("=" * 60)
         print("Pulsa Ctrl+C para detener el servidor.\n")
         try:
