@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Servidor HTTP per a l'aplicació Cifratge Web.
-- Serveix fitxers estàtics (HTML, CSS, JS, imatges).
-- Endpoint /api/visita (POST): Registra un visitant a dades.json.
-- Endpoint /api/visites (GET): Retorna el comptador i estadístiques en temps real.
-- Ruta /dades: Mostra el panell visual amb la taula de tots els visitants registrats.
-- Ruta /dades.json: Descarrega directament el fitxer JSON amb les dades.
+Servidor HTTP para la aplicación Cifrado Web.
+- Sirve archivos estáticos (HTML, CSS, JS, imágenes).
+- Endpoint /api/visita (POST): Registra un visitante en dades.json.
+- Endpoint /api/visites (GET): Devuelve el contador y estadísticas en tiempo real.
+- Ruta /dades: Muestra el panel visual con la tabla de todos los visitantes registrados.
+- Ruta /dades.json: Descarga directamente el archivo JSON con los datos.
 """
 
 import http.server
@@ -22,7 +22,7 @@ DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dades.json
 
 
 def carregar_dades():
-    """Carrega la llista de visites des de dades.json."""
+    """Carga la lista de visitas desde dades.json."""
     if not os.path.exists(DATA_FILE):
         return []
     try:
@@ -37,7 +37,7 @@ def carregar_dades():
 
 
 def desar_dades(dades):
-    """Guarda la llista de visites a dades.json de forma segura."""
+    """Guarda la lista de visitas en dades.json de forma segura."""
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(dades, f, ensure_ascii=False, indent=2)
@@ -48,23 +48,22 @@ def desar_dades(dades):
 
 
 def generar_html_dades(visites):
-    """Genera la pàgina HTML del panell /dades amb disseny Cyber-Dark."""
+    """Genera la página HTML del panel /dades con diseño Cyber-Dark."""
     total = len(visites)
-    paisos_unics = len(set(v.get("pais", "Desconegut") for v in visites if v.get("pais")))
-    usuaris_unics = len(set(v.get("usuari", "Anònim") for v in visites if v.get("usuari")))
-    darrera = visites[-1]["data_hora"] if visites else "Cap visita registrada"
+    paisos_unics = len(set(v.get("pais", "Desconocido") for v in visites if v.get("pais")))
+    usuaris_unics = len(set(v.get("usuari", "Anónimo") for v in visites if v.get("usuari")))
+    darrera = visites[-1]["data_hora"] if visites else "Ninguna visita registrada"
 
     files_html = []
-    # Mostrem les visites de la més recent a la més antiga
+    # Mostramos las visitas de la más reciente a la más antigua
     for i, v in enumerate(reversed(visites), 1):
         idx = total - i + 1
-        usuari = v.get("usuari", "Anònim")
-        pais = v.get("pais", "Desconegut")
-        regio = v.get("regio", "Desconeguda")
-        ciutat = v.get("ciutat", "Desconeguda")
+        usuari = v.get("usuari", "Anónimo")
+        pais = v.get("pais", "Desconocido")
+        regio = v.get("regio", "Desconocida")
+        ciutat = v.get("ciutat", "Desconocida")
         data_hora = v.get("data_hora", "-")
         ip = v.get("ip", "127.0.0.1")
-        dispositiu = v.get("dispositiu", "-")
 
         files_html.append(f"""
         <tr>
@@ -80,17 +79,17 @@ def generar_html_dades(visites):
 
     taula_contingut = "\n".join(files_html) if files_html else """
       <tr>
-        <td colspan="7" class="empty-state">Encara no s'ha registrat cap visita.</td>
+        <td colspan="7" class="empty-state">Aún no se ha registrado ninguna visita.</td>
       </tr>
     """
 
     return f"""<!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090d16">
-  <title>Registre de Visites (/dades) | Cifratge Web</title>
+  <title>Registro de Visitas (/dades) | Cifrado Web</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -236,34 +235,34 @@ def generar_html_dades(visites):
   <div class="dades-container">
     <div class="dades-header">
       <div>
-        <h1 class="dades-title">Registre de <span class="gradient-text">Visites</span></h1>
-        <p class="dades-subtitle">Dades en temps real enregistrades al fitxer <code>dades.json</code></p>
+        <h1 class="dades-title">Registro de <span class="gradient-text">Visitas</span></h1>
+        <p class="dades-subtitle">Datos en tiempo real registrados en el archivo <code>dades.json</code></p>
       </div>
       <div style="display:flex; gap:0.75rem; align-items:center;">
         <a href="/" class="btn btn-secondary btn-return">
-          ← Tornar a la Web
+          ← Volver a la Web
         </a>
         <a href="/dades.json" download="dades.json" class="btn btn-primary">
-          💾 Descarregar JSON
+          💾 Descargar JSON
         </a>
       </div>
     </div>
 
     <div class="metrics-grid">
       <div class="metric-card">
-        <span class="metric-label">Total Visites</span>
+        <span class="metric-label">Total Visitas</span>
         <span class="metric-val">{total}</span>
       </div>
       <div class="metric-card">
-        <span class="metric-label">Visitants Únics</span>
+        <span class="metric-label">Visitantes Únicos</span>
         <span class="metric-val">{usuaris_unics}</span>
       </div>
       <div class="metric-card">
-        <span class="metric-label">Països Detectats</span>
+        <span class="metric-label">Países Detectados</span>
         <span class="metric-val">{paisos_unics}</span>
       </div>
       <div class="metric-card">
-        <span class="metric-label">Darrera Visita</span>
+        <span class="metric-label">Última Visita</span>
         <span class="metric-val" style="font-size:1.15rem; color:#fff;">{darrera}</span>
       </div>
     </div>
@@ -272,11 +271,11 @@ def generar_html_dades(visites):
       <div class="table-toolbar">
         <div>
           <span class="live-pulse-dot"></span>
-          <strong style="color:#fff;">Llistat de Visites en Temps Real</strong>
-          <span style="color:var(--text-dim); font-size:0.8rem; margin-left:0.5rem;">({total} registres)</span>
+          <strong style="color:#fff;">Listado de Visitas en Tiempo Real</strong>
+          <span style="color:var(--text-dim); font-size:0.8rem; margin-left:0.5rem;">({total} registros)</span>
         </div>
-        <button onclick="location.reload()" class="btn-chip" title="Actualitzar">
-          🔄 Actualitzar Ara
+        <button onclick="location.reload()" class="btn-chip" title="Actualizar">
+          🔄 Actualizar Ahora
         </button>
       </div>
 
@@ -285,12 +284,12 @@ def generar_html_dades(visites):
           <thead>
             <tr>
               <th>#</th>
-              <th>Usuari</th>
+              <th>Usuario</th>
               <th>País</th>
-              <th>Regió</th>
-              <th>Ciutat</th>
-              <th>Data i Hora Exacta</th>
-              <th>Adreça IP</th>
+              <th>Región</th>
+              <th>Ciudad</th>
+              <th>Fecha y Hora Exacta</th>
+              <th>Dirección IP</th>
             </tr>
           </thead>
           <tbody>
@@ -302,7 +301,7 @@ def generar_html_dades(visites):
   </div>
 
   <script>
-    // Auto-recàrrega cada 10 segons per mantenir el panell actualitzat
+    // Auto-recarga cada 10 segundos para mantener el panel actualizado
     setTimeout(() => location.reload(), 10000);
   </script>
 </body>
@@ -310,18 +309,18 @@ def generar_html_dades(visites):
 
 
 class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
-    """Manejador personalitzat de peticions HTTP."""
+    """Manejador personalizado de peticiones HTTP."""
 
     def __init__(self, *args, **kwargs):
-        # Assegurar que el directori base és el del projecte
+        # Asegurar que el directorio base es el del proyecto
         super().__init__(*args, directory=os.path.dirname(os.path.abspath(__file__)), **kwargs)
 
     def do_GET(self):
         url_parsed = urllib.parse.urlparse(self.path)
         path = url_parsed.path
 
-        # Ruta 1: /dades -> Taula interactiva de dades de visitants
-        if path == "/dades":
+        # Ruta 1: /dades -> Tabla interactiva de datos de visitantes
+        if path in ("/dades", "/dades/", "/dades.html"):
             visites = carregar_dades()
             html = generar_html_dades(visites)
             self.send_response(200)
@@ -331,7 +330,7 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(html.encode("utf-8"))
             return
 
-        # Ruta 2: /dades.json -> Descarrega directa del fitxer JSON
+        # Ruta 2: /dades.json -> Descarga directa del archivo JSON
         elif path == "/dades.json":
             visites = carregar_dades()
             json_bytes = json.dumps(visites, ensure_ascii=False, indent=2).encode("utf-8")
@@ -342,7 +341,7 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json_bytes)
             return
 
-        # Ruta 3: /api/visites -> Retorna estadístiques i recompte en temps real
+        # Ruta 3: /api/visites -> Devuelve estadísticas y recuento en tiempo real
         elif path == "/api/visites":
             visites = carregar_dades()
             resp = {
@@ -358,14 +357,14 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json_bytes)
             return
 
-        # Qualsevol altre fitxer estàtic (HTML, CSS, JS, etc.)
+        # Cualquier otro archivo estático (HTML, CSS, JS, etc.)
         return super().do_GET()
 
     def do_POST(self):
         url_parsed = urllib.parse.urlparse(self.path)
         path = url_parsed.path
 
-        # Ruta 4: /api/visita -> Registra cada nou visitant a dades.json
+        # Ruta 4: /api/visita -> Registra cada nuevo visitante en dades.json
         if path == "/api/visita":
             content_length = int(self.headers.get("Content-Length", 0))
             post_data = self.rfile.read(content_length)
@@ -375,28 +374,28 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             except Exception:
                 body = {}
 
-            # IP del client
+            # IP del cliente
             client_ip = self.client_address[0]
             if "x-forwarded-for" in self.headers:
                 client_ip = self.headers["x-forwarded-for"].split(",")[0].strip()
 
-            # Data i hora exacta
+            # Fecha y hora exacta
             ara = datetime.now()
             data_hora_formatada = ara.strftime("%Y-%m-%d %H:%M:%S")
 
-            # Metadades de la visita
+            # Metadatos de la visita
             nou_registre = {
                 "id": None,
-                "usuari": body.get("usuari", f"Visitant-{int(ara.timestamp()) % 10000:04d}"),
-                "pais": body.get("pais", "Espanya"),
-                "regio": body.get("regio", "Catalunya"),
-                "ciutat": body.get("ciutat", "Barcelona"),
+                "usuari": body.get("usuari", f"Visitante-{int(ara.timestamp()) % 10000:04d}"),
+                "pais": body.get("pais", "España"),
+                "regio": body.get("regio", "Madrid"),
+                "ciutat": body.get("ciutat", "Madrid"),
                 "data_hora": data_hora_formatada,
                 "ip": client_ip,
                 "dispositiu": body.get("dispositiu", self.headers.get("User-Agent", "Navegador Web"))
             }
 
-            # Guardar al fitxer dades.json
+            # Guardar en el archivo dades.json
             visites = carregar_dades()
             nou_registre["id"] = len(visites) + 1
             visites.append(nou_registre)
@@ -404,7 +403,7 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             resp = {
                 "status": "success",
-                "message": "Visita registrada correctament",
+                "message": "Visita registrada correctamente",
                 "total_visites": len(visites),
                 "registre": nou_registre
             }
@@ -417,10 +416,10 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json_bytes)
             return
 
-        self.send_error(404, "Ruta no trobada")
+        self.send_error(404, "Ruta no encontrada")
 
     def do_OPTIONS(self):
-        """Permetre CORS si fos necessari."""
+        """Permitir CORS si fuera necesario."""
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -429,25 +428,25 @@ class CifratgeRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def iniciar_servidor():
-    """Inicia el servidor HTTP a PORT."""
-    # Inicialitzar dades.json si no existeix
+    """Inicia el servidor HTTP en PORT."""
+    # Inicializar dades.json si no existe
     if not os.path.exists(DATA_FILE):
         desar_dades([])
 
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), CifratgeRequestHandler) as httpd:
         print("=" * 60)
-        print("🚀 SERVIDOR WEB CIFRATGE EN FUNCIONAMENT")
+        print("🚀 SERVIDOR WEB DE CIFRADO EN FUNCIONAMIENTO")
         print("=" * 60)
-        print(f"👉 Aplicació Web:          http://localhost:{PORT}")
-        print(f"👉 Registre de Dades:      http://localhost:{PORT}/dades")
-        print(f"👉 Fitxer JSON de dades:   {DATA_FILE}")
+        print(f"👉 Aplicación Web:          http://localhost:{PORT}")
+        print(f"👉 Registro de Datos:       http://localhost:{PORT}/dades")
+        print(f"👉 Archivo JSON de datos:   {DATA_FILE}")
         print("=" * 60)
-        print("Prem Ctrl+C per aturar el servidor.\n")
+        print("Pulsa Ctrl+C para detener el servidor.\n")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\nAturant el servidor. Fins aviat!")
+            print("\nDeteniendo el servidor. ¡Hasta pronto!")
             httpd.server_close()
 
 

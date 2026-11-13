@@ -1,123 +1,122 @@
-# Cifratge de Missatges
+# Cifrado de Mensajes
 
-Programa senzill i modular en Python que permet **xifrar** i **desxifrar** textos utilitzant tres algoritmes clàssics:
-1. **Inversió de text**
-2. **Xifratge Cèsar**
-3. **Codi Morse**
+Programa sencillo y modular en Python que permite **cifrar** y **descifrar** textos utilizando tres algoritmos clásicos:
+1. **Inversión de texto**
+2. **Cifrado César**
+3. **Código Morse**
 
-El projecte està implementat únicament amb la llibreria estàndard de Python, de manera que no requereix cap instal·lació de paquets addicionals.
-
----
-
-## Com funciona cada algoritme
-
-### 1. Inversió de text
-* **Què fa?** Inverteix completament l'ordre dels caràcters de la cadena de text.
-* **Com funciona?** Utilitza l'operador d'eslicing de Python `text[::-1]`.
-* **Desxifratge:** Com que la inversió és una operació involutiva (aplicar-la dues vegades retorna al text original, $f(f(x)) = x$), el procés de desxifrar és exactament el mateix que el de xifrar.
-* **Exemple:**
-  * Original: `Hola mon`
-  * Xifrat: `nom aloH`
-  * Desxifrat: `Hola mon`
+El proyecto está implementado únicamente con la librería estándar de Python, por lo que no requiere ninguna instalación de paquetes adicionales.
 
 ---
 
-### 2. Xifratge Cèsar
-* **Què fa?** És un algoritme clàssic de substitució monoalfabètica on cada lletra del text és substituïda per una altra lletra que es troba un nombre fix de posicions més endavant a l'abecedari.
-* **Com funciona?**
-  * Utilitza aritmètica modular sobre l'alfabet de 26 lletres (A-Z):
-    $$\text{Xifratge: } C = (P + k) \pmod{26}$$
-    $$\text{Desxifratge: } P = (C - k) \pmod{26}$$
-    on $P$ és la posició de la lletra original, $k$ és el desplaçament (per defecte $3$), i $C$ és la posició resultant.
-  * Manté les majúscules i minúscules en la seva forma corresponent.
-  * Els espais, números i signes de puntuació es mantenen intactes sense modificar.
-* **Exemple (desplaçament = 3):**
-  * Original: `Hola, mon!`
-  * Xifrat: `Krod, prq!`
-  * Desxifrat: `Hola, mon!`
+## Cómo funciona cada algoritmo
+
+### 1. Inversión de texto
+* **¿Qué hace?** Invierte completamente el orden de los caracteres de la cadena de texto.
+* **¿Cómo funciona?** Utiliza el operador de slicing de Python `text[::-1]`.
+* **Descifrado:** Dado que la inversión es una operación involutiva (aplicarla dos veces devuelve al texto original, $f(f(x)) = x$), el proceso de descifrar es exactamente el mismo que el de cifrar.
+* **Ejemplo:**
+  * Original: `Hola mundo`
+  * Cifrado: `odnum aloH`
+  * Descifrado: `Hola mundo`
 
 ---
 
-### 3. Codi Morse
-* **Què fa?** Representa lletres, números i signes de puntuació mitjançant seqüències de senyals curts (punts `.`) i llargs (ratlles `-`).
-* **Com funciona?**
-  * **Normalització de caràcters:** Abans de convertir a Morse, el text es normalitza utilitzant la descomposició Unicode NFKD per eliminar accents i diacrítics (per exemple, `à` $\rightarrow$ `A`, `é` $\rightarrow$ `E`), garantint que paraules amb accents es puguin codificar sense errors.
-  * **Separació:** Les lletres d'una mateixa paraula es separen per un espai (` `), i les paraules es separen per una barra inclinada (` / `).
-  * **Desxifratge:** El programa llegeix les barres per separar paraules i els espais per separar cada lletra, cercant cada seqüència de punts i ratlles en un diccionari invers.
-* **Exemple:**
-  * Original: `SOS MON`
-  * Xifrat: `... --- ... / -- --- -.`
-  * Desxifrat: `SOS MON`
+### 2. Cifrado César
+* **¿Qué hace?** Es un algoritmo clásico de sustitución monoalfabética donde cada letra del texto es sustituida por otra letra que se encuentra un número fijo de posiciones más adelante en el abecedario.
+* **¿Cómo funciona?**
+  * Utiliza aritmética modular sobre el alfabeto de 26 letras (A-Z):
+    $$\text{Cifrado: } C = (P + k) \pmod{26}$$
+    $$\text{Descifrado: } P = (C - k) \pmod{26}$$
+    donde $P$ es la posición de la letra original, $k$ es el desplazamiento (por defecto $3$), y $C$ es la posición resultante.
+  * Mantiene las mayúsculas y minúsculas en su forma correspondiente.
+  * Los espacios, números y signos de puntuación se mantienen intactos sin modificar.
+* **Ejemplo (desplazamiento = 3):**
+  * Original: `¡Hola, mundo!`
+  * Cifrado: `¡Krod, pxqgr!`
+  * Descifrado: `¡Hola, mundo!`
 
 ---
 
-## Requisits
-
-* Python 3.6 o superior instal·lat al sistema.
+### 3. Código Morse
+* **¿Qué hace?** Representa letras, números y signos de puntuación mediante secuencias de señales cortas (puntos `.`) y largas (rayas `-`).
+* **¿Cómo funciona?**
+  * **Normalización de caracteres:** Antes de convertir a Morse, el texto se normaliza utilizando la descomposición Unicode NFKD para eliminar acentos y diacríticos (por ejemplo, `á` $\rightarrow$ `A`, `é` $\rightarrow$ `E`), garantizando que palabras con acentos se puedan codificar sin errores.
+  * **Separación:** Las letras de una misma palabra se separan por un espacio (` `), y las palabras se separan por una barra inclinada (` / `).
+  * **Descifrado:** El programa lee las barras para separar palabras y los espacios para separar cada letra, buscando cada secuencia de puntos y rayas en un diccionario inverso.
+* **Ejemplo:**
+  * Original: `SOS MUNDO`
+  * Cifrado: `... --- ... / -- ..- -. -.. ---`
+  * Descifrado: `SOS MUNDO`
 
 ---
 
-## Instruccions d'ús
+## Requisitos
 
-### 1. Aplicació Web (Navegador) 🌐
+* Python 3.6 o superior instalado en el sistema.
 
-L'aplicació compta amb una interfície web moderna i interactiva, accessible directament des de qualsevol navegador web (Chrome, Firefox, Safari, Edge) sense necessitat de servidors ni dependències externes.
+---
 
-* **Com executar el servidor amb registre de visites:**
-  * Executa el servidor Python integrat:
+## Instrucciones de uso
+
+### 1. Aplicación Web (Navegador) 🌐
+
+La aplicación cuenta con una interfaz web moderna e interactiva, accesible directamente desde cualquier navegador web (Chrome, Firefox, Safari, Edge) sin necesidad de dependencias externas.
+
+* **Cómo ejecutar el servidor con registro de visitas:**
+  * Ejecuta el servidor Python integrado:
     ```bash
     python server.py
     ```
-  * Obre el teu navegador a:
-    * **Aplicació Web:** [http://localhost:8000](http://localhost:8000)
-    * **Panell de Dades de Visitants:** [http://localhost:8000/dades](http://localhost:8000/dades)
-    * **Fitxer JSON directe:** [http://localhost:8000/dades.json](http://localhost:8000/dades.json)
+  * Abre tu navegador en:
+    * **Aplicación Web:** [http://localhost:8000](http://localhost:8000)
+    * **Panel de Datos de Visitantes:** [http://localhost:8000/dades](http://localhost:8000/dades)
+    * **Archivo JSON directo:** [http://localhost:8000/dades.json](http://localhost:8000/dades.json)
 
-* **Característiques de la versió Web i Servidor:**
-  * **Comptador de visites en temps real:** Situat a la capçalera superior de la web, s'actualitza en viu.
-  * **Registre de dades (`dades.json`):** Desa automàticament cada visitant amb el seu identificador d'usuari, país, regió, ciutat, data i hora exacta d'accés, i adreça IP.
-  * **Panell `/dades`:** Visualització gràfica de les visites, mètriques (visites totals, usuaris únics, països) i botó de descàrrega directa del fitxer `.json`.
-  * **Interfície Gràfica Moderna:** Disseny Cyber-Dark amb estil glassmorphism i transicions suaus.
-  * **Xifratge en Temps Real:** Conversió automàtica instantània mentre escrius.
-  * **Xifratge Cèsar:** Slider interactiu de desplaçament ($k \in [1, 25]$), botó ROT-13, visualitzador dinàmic de l'abecedari i **Desxifrador per Força Bruta** (mostra els 25 desplaçaments possibles alhora).
-  * **Codi Morse Interactiu:** Reproducció d'àudio sintetitzat mitjançant la **Web Audio API** amb velocitat (WPM) i to (Hz) configurables, indicador lluminós de transmissió (LED òptic) i taula de referència completa.
-  * **Multixifratge:** Panell comparatiu per visualitzar els 3 algoritmes alhora.
-  * **Utilitats:** Botó per intercanviar entrada/sortida (Swap), copiar al porta-retalls en un clic, descarregar el resultat en fitxer `.txt` i historial local de conversions.
+* **Características de la versión Web y Servidor:**
+  * **Contador de visitas en tiempo real:** Situado en la cabecera superior de la web, se actualiza en vivo.
+  * **Registro de datos (`dades.json`):** Guarda automáticamente cada visitante con su identificador de usuario, país, región, ciudad, fecha y hora exacta de acceso, y dirección IP.
+  * **Panel `/dades`:** Visualización gráfica de las visitas, métricas (visitas totales, usuarios únicos, países) y botón de descarga directa del archivo `.json`.
+  * **Interfaz Gráfica Moderna:** Diseño Cyber-Dark con estilo glassmorphism y transiciones suaves.
+  * **Cifrado en Tiempo Real:** Conversión automática instantánea mientras escribes.
+  * **Cifrado César:** Slider interactivo de desplazamiento ($k \in [1, 25]$), botón ROT-13, visualizador dinámico del abecedario y **Descifrador por Fuerza Bruta** (muestra los 25 desplazamientos posibles al mismo tiempo).
+  * **Código Morse Interactivo:** Reproducción de audio sintetizado mediante la **Web Audio API** con velocidad (WPM) y tono (Hz) configurables, indicador luminoso de transmisión (LED óptico) y tabla de referencia completa.
+  * **Utilidades:** Botón para intercambiar entrada/salida (Swap), copiar al portapapeles en un clic, descargar el resultado en archivo `.txt` e historial local de conversiones.
 
 ---
 
-### 2. Execució interactiva (Consola de terminal) 💻
+### 2. Ejecución interactiva (Consola de terminal) 💻
 
-Executa el fitxer principal des del terminal:
+Ejecuta el archivo principal desde el terminal:
 
 ```bash
 python cifratge.py
 ```
 
-S'obrirà un menú interactiu:
+Se abrirá un menú interactivo:
 
 ```text
 =============================================
-          EINA DE XIFRATGE I DESXIFRATGE     
+          HERRAMIENTA DE CIFRADO Y DESCIFRADO     
 =============================================
-1. Inversió de text
-2. Xifratge Cèsar
-3. Codi Morse
-4. Sortir
+1. Inversión de texto
+2. Cifrado César
+3. Código Morse
+4. Salir
 =============================================
-Tria una opció (1-4):
+Elige una opción (1-4):
 ```
 
-1. Tria l'algoritme (1, 2 o 3).
-2. Tria si vols **xifrar** (1) o **desxifrar** (2).
-3. Introdueix el text quan se't demani (i el nombre de desplaçament si has triat Cèsar).
-4. El resultat es mostrarà immediatament per pantalla.
+1. Elige el algoritmo (1, 2 o 3).
+2. Elige si quieres **cifrar** (1) o **descifrar** (2).
+3. Introduce el texto cuando se te pida (y el número de desplazamiento si has elegido César).
+4. El resultado se mostrará inmediatamente por pantalla.
 
 ---
 
-### 3. Ús com a mòdul de Python
+### 3. Uso como módulo de Python
 
-També pots importar les funcions directament als teus propis scripts de Python:
+También puedes importar las funciones directamente en tus propios scripts de Python:
 
 ```python
 from cifratge import (
@@ -126,17 +125,17 @@ from cifratge import (
     xifrar_morse, desxifrar_morse
 )
 
-# Inversió
+# Inversión
 print(xifrar_inversio("Antigravity"))    # "ytivarginA"
 print(desxifrar_inversio("ytivarginA"))  # "Antigravity"
 
-# Cèsar (desplaçament personalitzat, ex: 5)
-text_xifrat = xifrar_cesar("Missatge secret", 5)
-print(text_xifrat)                       # "Rnxxfylj xjhwjy"
-print(desxifrar_cesar(text_xifrat, 5))   # "Missatge secret"
+# César (desplazamiento personalizado, ej: 5)
+texto_cifrado = xifrar_cesar("Mensaje secreto", 5)
+print(texto_cifrado)                     # "Rjsxfoj xjhwjyt"
+print(desxifrar_cesar(texto_cifrado, 5)) # "Mensaje secreto"
 
-# Codi Morse
-morse = xifrar_morse("Bon dia")
-print(morse)                             # "-... --- -. / -.. .. .-"
-print(desxifrar_morse(morse))            # "BON DIA"
+# Código Morse
+morse = xifrar_morse("Buenos dias")
+print(morse)                             # "-... ..- . -. --- ... / -.. .. .- ..."
+print(desxifrar_morse(morse))            # "BUENOS DIAS"
 ```

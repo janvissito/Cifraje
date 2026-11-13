@@ -1,15 +1,14 @@
 /**
- * CIFRATGE WEB - APLICACIÓ COMPLETA DE XIFRATGE I CODI MORSE
- * Algoritmes suportats:
- *   1. Xifratge Cèsar (Caesar Cipher)
- *   2. Codi Morse (Morse Code amb Web Audio API & Optical LED)
- *   3. Inversió de Text (Text Reverse)
- *   4. Multixifratge (Comparativa simultània)
+ * CIFRADO WEB - APLICACIÓN COMPLETA DE CIFRADO Y CÓDIGO MORSE
+ * Algoritmos soportados:
+ *   1. Cifrado César (Caesar Cipher)
+ *   2. Código Morse (Morse Code con Web Audio API & Optical LED)
+ *   3. Inversión de Texto (Text Reverse)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
-  // 1. DICCIONARI I CONSTANTS MORSE
+  // 1. DICCIONARIO Y CONSTANTES MORSE
   // =========================================================================
   const DICCIONARI_MORSE = {
     'A': '.-',     'B': '-...',   'C': '-.-.',   'D': '-..',    'E': '.',
@@ -27,14 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const DICCIONARI_MORSE_INVERS = Object.fromEntries(
-    Object.entries(DICCIONARI_MORSE).map(([lletra, codi]) => [codi, lletra])
+    Object.entries(DICCIONARI_MORSE).map(([letra, codigo]) => [codigo, letra])
   );
 
   // =========================================================================
-  // 2. ESTAT DE L'APLICACIÓ
+  // 2. ESTADO DE LA APLICACIÓN
   // =========================================================================
   const state = {
-    currentAlgo: 'cesar', // 'cesar' | 'morse' | 'inversio' | 'multi'
+    currentAlgo: 'cesar', // 'cesar' | 'morse' | 'inversio'
     currentAction: 'encrypt', // 'encrypt' | 'decrypt'
     isLive: true,
     caesarShift: 3,
@@ -44,38 +43,37 @@ document.addEventListener('DOMContentLoaded', () => {
     history: []
   };
 
-  // Carregar historial de localStorage si existeix
+  // Cargar historial de localStorage si existe
   try {
     const saved = localStorage.getItem('cifratge_history');
     if (saved) state.history = JSON.parse(saved);
   } catch (e) {
-    console.warn('No s\'ha pogut accedir a localStorage:', e);
+    console.warn('No se ha podido acceder a localStorage:', e);
   }
 
   // =========================================================================
-  // 3. ELEMENTS DEL DOM
+  // 3. ELEMENTOS DEL DOM
   // =========================================================================
   const dom = {
-    // Tabs
+    // Pestañas (Tabs)
     tabBtns: document.querySelectorAll('.tab-btn'),
     
-    // Header & Algo Info
+    // Encabezado e Info del Algoritmo
     algoTitle: document.getElementById('algo-current-title'),
     algoDesc: document.getElementById('algo-current-desc'),
     algoBadgeFeature: document.getElementById('algo-badge-feature'),
     
-    // Mode
+    // Modo
     modeEncryptBtn: document.getElementById('mode-encrypt'),
     modeDecryptBtn: document.getElementById('mode-decrypt'),
     liveConvertToggle: document.getElementById('live-convert-toggle'),
     
-    // Params Panels
+    // Paneles de Parámetros
     paramsCesar: document.getElementById('params-cesar'),
     paramsMorse: document.getElementById('params-morse'),
     paramsInversio: document.getElementById('params-inversio'),
-    paramsMulti: document.getElementById('params-multi'),
     
-    // Caesar Controls
+    // Controles César
     caesarSlider: document.getElementById('caesar-shift-slider'),
     caesarNumber: document.getElementById('caesar-shift-number'),
     caesarValText: document.getElementById('caesar-shift-value'),
@@ -87,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alphaOriginalStrip: document.getElementById('alphabet-original-strip'),
     alphaShiftedStrip: document.getElementById('alphabet-shifted-strip'),
     
-    // Morse Audio & Light
+    // Audio y Luz Morse
     btnMorsePlay: document.getElementById('btn-morse-play'),
     btnMorseStop: document.getElementById('btn-morse-stop'),
     morseLed: document.getElementById('morse-led'),
@@ -96,10 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
     morseFreqSlider: document.getElementById('morse-freq-slider'),
     morseFreqVal: document.getElementById('morse-freq-val'),
     
-    // Inversion Options
+    // Opciones de Inversión
     inversionRadios: document.querySelectorAll('input[name="inversion-type"]'),
     
-    // IO Areas
+    // Áreas de Entrada y Salida (IO)
     textInput: document.getElementById('text-input'),
     textOutput: document.getElementById('text-output'),
     inputCharsCount: document.getElementById('input-chars-count'),
@@ -108,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     outputWordsCount: document.getElementById('output-words-count'),
     statusText: document.getElementById('status-text'),
     
-    // Action Buttons
+    // Botones de Acción
     btnSwapIo: document.getElementById('btn-swap-io'),
     btnClearInput: document.getElementById('btn-clear-input'),
     btnSampleInput: document.getElementById('btn-sample-input'),
@@ -117,14 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnDownloadOutput: document.getElementById('btn-download-output'),
     btnManualConvert: document.getElementById('btn-manual-convert'),
     
-    // Multi View
-    standardView: document.getElementById('standard-conversion-view'),
-    multiView: document.getElementById('multi-comparison-view'),
-    multiCesarVal: document.getElementById('multi-cesar-val'),
-    multiMorseVal: document.getElementById('multi-morse-val'),
-    multiInversioVal: document.getElementById('multi-inversio-val'),
-    
-    // Modals & Drawers
+    // Modales y Paneles Desplegables
     modalBruteforce: document.getElementById('modal-bruteforce'),
     btnCloseBfModal: document.getElementById('btn-close-bf-modal'),
     bruteforceResultsList: document.getElementById('bruteforce-results-list'),
@@ -144,17 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
     historyBadge: document.getElementById('history-badge'),
     historyCountText: document.getElementById('history-count-text'),
     
-    // Toast
+    // Notificación Toast
     toast: document.getElementById('toast-notification'),
     toastMsg: document.getElementById('toast-message')
   };
 
   // =========================================================================
-  // 4. FUNCIONS MATEMÀTIQUES I D'ALGORITMES DE XIFRATGE
+  // 4. FUNCIONES MATEMÁTICAS Y ALGORITMOS DE CIFRADO
   // =========================================================================
 
   /**
-   * 1. Inversió de text
+   * 1. Inversión de texto
    */
   function xifrarInversio(text, type = 'full') {
     if (!text) return '';
@@ -163,22 +154,21 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (type === 'word-order') {
       return text.split(' ').reverse().join(' ');
     }
-    // Tipus 'full' per defecte (equivalent directe a cifratge.py text[::-1])
+    // Tipo 'full' por defecto
     return [...text].reverse().join('');
   }
 
   function desxifrarInversio(text, type = 'full') {
-    // La inversió és involutiva: desxifrar equival a xifrar
+    // La inversión es involutiva: descifrar equivale a cifrar
     return xifrarInversio(text, type);
   }
 
   /**
-   * 2. Xifratge Cèsar
-   * Manté exactament el funcionament modular de cifratge.py
+   * 2. Cifrado César
    */
   function xifrarCesar(text, desplacament = 3) {
     if (!text) return '';
-    const shift = ((desplacament % 26) + 26) % 26; // Suport robust per valors negatius
+    const shift = ((desplacament % 26) + 26) % 26; // Soporte robusto para valores negativos
     let res = '';
     
     for (let i = 0; i < text.length; i++) {
@@ -201,11 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * 3. Codi Morse
-   * Implementa la descomposició Unicode NFKD per eliminar accents com en cifratge.py
+   * 3. Código Morse
+   * Implementa la descomposición Unicode NFKD para eliminar acentos
    */
   function normalitzarTextMorse(text) {
-    // NFKD descompon caràcters com 'é' en 'e' + accés combinatori, que eliminem amb regex
     return text
       .normalize('NFKD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -259,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 5. MOTOR DE CONVERSIÓ PRINCIPAL
+  // 5. MOTOR DE CONVERSIÓN PRINCIPAL
   // =========================================================================
   function performConversion() {
     const text = dom.textInput.value;
@@ -278,45 +267,35 @@ document.addEventListener('DOMContentLoaded', () => {
       resultat = currentAction === 'encrypt' 
         ? xifrarInversio(text, inversionType) 
         : desxifrarInversio(text, inversionType);
-    } else if (currentAlgo === 'multi') {
-      // Multixifratge
-      const resCesar = currentAction === 'encrypt' ? xifrarCesar(text, caesarShift) : desxifrarCesar(text, caesarShift);
-      const resMorse = currentAction === 'encrypt' ? xifrarMorse(text) : desxifrarMorse(text);
-      const resInversio = currentAction === 'encrypt' ? xifrarInversio(text, inversionType) : desxifrarInversio(text, inversionType);
-      
-      dom.multiCesarVal.textContent = resCesar || '(Buit)';
-      dom.multiMorseVal.textContent = resMorse || '(Buit)';
-      dom.multiInversioVal.textContent = resInversio || '(Buit)';
-      resultat = resCesar;
     }
 
     dom.textOutput.value = resultat;
     updateStats();
     updateCaesarAlphabetStrip();
-    dom.statusText.textContent = 'Actualitzat';
+    dom.statusText.textContent = 'Actualizado';
   }
 
   function updateStats() {
     const inputVal = dom.textInput.value;
     const outputVal = dom.textOutput.value;
 
-    dom.inputCharsCount.textContent = `${inputVal.length} caràcters`;
-    dom.inputWordsCount.textContent = `${inputVal.trim() ? inputVal.trim().split(/\s+/).length : 0} paraules`;
+    dom.inputCharsCount.textContent = `${inputVal.length} caracteres`;
+    dom.inputWordsCount.textContent = `${inputVal.trim() ? inputVal.trim().split(/\s+/).length : 0} palabras`;
 
-    dom.outputCharsCount.textContent = `${outputVal.length} caràcters`;
-    dom.outputWordsCount.textContent = `${outputVal.trim() ? outputVal.trim().split(/\s+/).length : 0} paraules`;
+    dom.outputCharsCount.textContent = `${outputVal.length} caracteres`;
+    dom.outputWordsCount.textContent = `${outputVal.trim() ? outputVal.trim().split(/\s+/).length : 0} palabras`;
   }
 
   // =========================================================================
-  // 6. MAPA VISUAL DE L'ALFABET CÈSAR
+  // 6. MAPA VISUAL DEL ALFABETO CÉSAR
   // =========================================================================
   function initCaesarAlphabetStrip() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     dom.alphaOriginalStrip.innerHTML = '';
-    for (const lletra of alphabet) {
+    for (const letra of alphabet) {
       const cell = document.createElement('div');
       cell.className = 'alpha-cell';
-      cell.textContent = lletra;
+      cell.textContent = letra;
       dom.alphaOriginalStrip.appendChild(cell);
     }
     updateCaesarAlphabetStrip();
@@ -328,16 +307,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const shift = state.currentAction === 'encrypt' ? state.caesarShift : -state.caesarShift;
     dom.alphaShiftedStrip.innerHTML = '';
 
-    for (const lletra of alphabet) {
+    for (const letra of alphabet) {
       const cell = document.createElement('div');
       cell.className = 'alpha-cell';
-      cell.textContent = xifrarCesar(lletra, shift);
+      cell.textContent = xifrarCesar(letra, shift);
       dom.alphaShiftedStrip.appendChild(cell);
     }
   }
 
   // =========================================================================
-  // 7. SINTETITZADOR D'ÀUDIO WEB AUDIO API PER A CODI MORSE
+  // 7. SINTETIZADOR DE AUDIO WEB AUDIO API PARA CÓDIGO MORSE
   // =========================================================================
   let audioCtx = null;
   let isPlayingMorse = false;
@@ -362,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
     osc.type = 'sine';
     osc.frequency.setValueAtTime(freq, startTime);
 
-    // Suavitzar vores amb rampa d'atac i caiguda ràpida per evitar clics
+    // Suavizar bordes con rampa de ataque y caída rápida para evitar chasquidos
     const attackTime = 0.005;
     gain.gain.setValueAtTime(0, startTime);
     gain.gain.linearRampToValueAtTime(0.25, startTime + attackTime);
@@ -379,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function playMorseAudio() {
     stopMorseAudio();
 
-    // Obtenir el text morse de sortida o d'entrada
+    // Obtener el código morse de salida o de entrada
     let morseCode = '';
     if (state.currentAlgo === 'morse') {
       morseCode = state.currentAction === 'encrypt' ? dom.textOutput.value : dom.textInput.value;
@@ -388,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!morseCode.trim()) {
-      showToast('Introdueix text per generar codi Morse abans de reproduir.');
+      showToast('Introduce texto para generar código Morse antes de reproducir.');
       return;
     }
 
@@ -396,8 +375,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const wpm = parseInt(dom.morseWpmSlider.value, 10) || 15;
     const freq = parseInt(dom.morseFreqSlider.value, 10) || 650;
     
-    // Càlcul estàndard PARIS WPM
-    // 1 dot = 1.2 / WPM segons
+    // Cálculo estándar PARIS WPM
+    // 1 dot = 1.2 / WPM segundos
     const dotDuration = 1.2 / wpm;
     const dashDuration = dotDuration * 3;
     const symbolPause = dotDuration;
@@ -428,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Programar finalització
+    // Programar finalización
     const totalDurationMs = (currentTime - ctx.currentTime) * 1000;
     const finishTimeout = setTimeout(() => {
       stopMorseAudio();
@@ -466,12 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 8. FORÇA BRUTA CÈSAR (DESXIFRATGE DE TOTS ELS 25 DESPLAÇAMENTS)
+  // 8. FUERZA BRUTA CÉSAR (DESCIFRADO DE LOS 25 DESPLAZAMIENTOS)
   // =========================================================================
   function openBruteforceModal() {
     const text = dom.textInput.value;
     if (!text.trim()) {
-      showToast('Introdueix un text per analitzar per força bruta.');
+      showToast('Introduce un texto para analizar por fuerza bruta.');
       return;
     }
 
@@ -484,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
       item.innerHTML = `
         <span class="bf-shift-tag">Desp. ${k}</span>
         <span class="bf-text-preview" title="${escapeHtml(decoded)}">${escapeHtml(decoded)}</span>
-        <button class="bf-select-btn">Utilitzar</button>
+        <button class="bf-select-btn">Usar</button>
       `;
 
       item.addEventListener('click', () => {
@@ -495,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setMode('decrypt');
         performConversion();
         closeModals();
-        showToast(`S'ha seleccionat el desplaçament ${k} en mode desxifratge.`);
+        showToast(`Se ha seleccionado el desplazamiento ${k} en modo descifrado.`);
       });
 
       dom.bruteforceResultsList.appendChild(item);
@@ -505,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 9. TAULA DE REFERÈNCIA MORSE
+  // 9. TABLA DE REFERENCIA MORSE
   // =========================================================================
   function populateMorseTable() {
     dom.morseLettersGrid.innerHTML = '';
@@ -520,10 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'morse-card';
       card.innerHTML = `<span class="morse-char">${char}</span><span class="morse-code">${code}</span>`;
       card.style.cursor = 'pointer';
-      card.title = 'Fes clic per escoltar';
+      card.title = 'Haz clic para escuchar';
 
       card.addEventListener('click', () => {
-        // Reproduir so d'aquesta lletra
+        // Reproducir sonido de esta letra
         const ctx = getAudioContext();
         const dotDuration = 0.08;
         const dashDuration = 0.24;
@@ -550,14 +529,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 10. GESTIÓ D'HISTORIAL
+  // 10. GESTIÓN DEL HISTORIAL
   // =========================================================================
   function saveToHistory() {
     const input = dom.textInput.value.trim();
     const output = dom.textOutput.value.trim();
     if (!input || !output) return;
 
-    // Evitar duplicats consecutius
+    // Evitar duplicados consecutivos
     if (state.history.length > 0 && state.history[0].input === input && state.history[0].algo === state.currentAlgo) {
       return;
     }
@@ -584,12 +563,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderHistory() {
     dom.historyBadge.textContent = state.history.length;
-    dom.historyCountText.textContent = `${state.history.length} conversions guardades`;
+    dom.historyCountText.textContent = `${state.history.length} conversiones guardadas`;
 
     if (state.history.length === 0) {
       dom.historyList.innerHTML = `
         <div class="empty-history-state">
-          <p>No hi ha conversions recents enregistrades.</p>
+          <p>No hay conversiones recientes registradas.</p>
         </div>
       `;
       return;
@@ -599,12 +578,11 @@ document.addEventListener('DOMContentLoaded', () => {
     state.history.forEach(item => {
       const card = document.createElement('div');
       card.className = 'history-card';
-      const actionText = item.action === 'encrypt' ? '🔒 Xifrat' : '🔓 Desxifrat';
+      const actionText = item.action === 'encrypt' ? '🔒 Cifrado' : '🔓 Descifrado';
       const algoLabel = {
-        cesar: `Cèsar (+${item.shift})`,
+        cesar: `César (+${item.shift})`,
         morse: 'Morse',
-        inversio: 'Inversió',
-        multi: 'Multixifratge'
+        inversio: 'Inversión'
       }[item.algo] || item.algo;
 
       card.innerHTML = `
@@ -614,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="hist-text"><strong>Entrada:</strong> ${escapeHtml(item.input)}</div>
         <div class="hist-arrow">⬇</div>
-        <div class="hist-text"><strong>Sortida:</strong> ${escapeHtml(item.output)}</div>
+        <div class="hist-text"><strong>Salida:</strong> ${escapeHtml(item.output)}</div>
       `;
 
       card.addEventListener('click', () => {
@@ -629,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         performConversion();
         closeModals();
-        showToast('Conversió recuperada de l\'historial.');
+        showToast('Conversión recuperada del historial.');
       });
 
       dom.historyList.appendChild(card);
@@ -642,59 +620,45 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('cifratge_history');
     } catch (e) {}
     renderHistory();
-    showToast('Historial esborrat correctament.');
+    showToast('Historial borrado correctamente.');
   }
 
   // =========================================================================
-  // 11. CANVI DE TAB / ALGORITME
+  // 11. CAMBIO DE PESTAÑA / ALGORITMO
   // =========================================================================
   function setAlgo(algo) {
     state.currentAlgo = algo;
 
-    // Actualitzar tabs actius
+    // Actualizar pestañas activas
     dom.tabBtns.forEach(btn => {
       const isActive = btn.dataset.algo === algo;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    // Ocultar tots els panells de paràmetres
+    // Ocultar todos los paneles de parámetros
     dom.paramsCesar.classList.add('hidden');
     dom.paramsMorse.classList.add('hidden');
     dom.paramsInversio.classList.add('hidden');
-    dom.paramsMulti.classList.add('hidden');
 
-    // Aturar qualsevol so morse en curs
+    // Detener cualquier sonido morse en curso
     stopMorseAudio();
 
     if (algo === 'cesar') {
       dom.paramsCesar.classList.remove('hidden');
-      dom.algoTitle.textContent = 'Xifratge Cèsar';
-      dom.algoDesc.textContent = "Aplica un desplaçament determinat de posicions a l'alfabet sobre cada lletra. Manté majúscules, minúscules i puntuació intactes.";
-      dom.algoBadgeFeature.textContent = 'Aritmètica Modular (mod 26)';
-      dom.standardView.classList.remove('hidden');
-      dom.multiView.classList.add('hidden');
+      dom.algoTitle.textContent = 'Cifrado César';
+      dom.algoDesc.textContent = "Aplica un desplazamiento determinado de posiciones en el alfabeto sobre cada letra. Mantiene mayúsculas, minúsculas y puntuación intactas.";
+      dom.algoBadgeFeature.textContent = 'Aritmética Modular (mod 26)';
     } else if (algo === 'morse') {
       dom.paramsMorse.classList.remove('hidden');
-      dom.algoTitle.textContent = 'Codi Morse';
-      dom.algoDesc.textContent = "Codifica el text en punts i ratlles amb normalització NFKD d'accents. Inclou reproductor d'àudio sintetitzat i senyal lluminós.";
-      dom.algoBadgeFeature.textContent = 'Senyals Telegràfics & Web Audio';
-      dom.standardView.classList.remove('hidden');
-      dom.multiView.classList.add('hidden');
+      dom.algoTitle.textContent = 'Código Morse';
+      dom.algoDesc.textContent = "Codifica el texto en puntos y rayas con normalización NFKD de acentos. Incluye reproductor de audio sintetizado y señal luminosa.";
+      dom.algoBadgeFeature.textContent = 'Señales Telegráficas y Web Audio';
     } else if (algo === 'inversio') {
       dom.paramsInversio.classList.remove('hidden');
-      dom.algoTitle.textContent = 'Inversió de Text';
-      dom.algoDesc.textContent = "Inverteix l'ordre dels caràcters de la cadena. Com que és una funció involutiva (f(f(x)) = x), desxifrar és idèntic a xifrar.";
-      dom.algoBadgeFeature.textContent = 'Funció Involutiva';
-      dom.standardView.classList.remove('hidden');
-      dom.multiView.classList.add('hidden');
-    } else if (algo === 'multi') {
-      dom.paramsMulti.classList.remove('hidden');
-      dom.algoTitle.textContent = 'Panell de Multixifratge';
-      dom.algoDesc.textContent = "Compara el resultat simultani dels tres algoritmes (Cèsar, Morse i Inversió) en temps real.";
-      dom.algoBadgeFeature.textContent = 'Multi-algoritme en paral·lel';
-      dom.standardView.classList.add('hidden');
-      dom.multiView.classList.remove('hidden');
+      dom.algoTitle.textContent = 'Inversión de Texto';
+      dom.algoDesc.textContent = "Invierte el orden de los caracteres de la cadena. Al ser una función involutiva (f(f(x)) = x), descifrar es idéntico a cifrar.";
+      dom.algoBadgeFeature.textContent = 'Función Involutiva';
     }
 
     performConversion();
@@ -705,16 +669,16 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.modeEncryptBtn.classList.toggle('active', mode === 'encrypt');
     dom.modeDecryptBtn.classList.toggle('active', mode === 'decrypt');
     
-    // Canviar etiquetes
+    // Cambiar etiquetas
     const inputLabel = document.getElementById('input-label');
     const outputLabel = document.getElementById('output-label');
     if (inputLabel && outputLabel) {
       if (mode === 'encrypt') {
-        inputLabel.textContent = 'Text Original (a codificar)';
-        outputLabel.textContent = 'Text Xifrat (resultat)';
+        inputLabel.textContent = 'Texto Original (a codificar)';
+        outputLabel.textContent = 'Texto Cifrado (resultado)';
       } else {
-        inputLabel.textContent = 'Text Xifrat (a decodificar)';
-        outputLabel.textContent = 'Text Desxifrat (original)';
+        inputLabel.textContent = 'Texto Cifrado (a decodificar)';
+        outputLabel.textContent = 'Texto Descifrado (original)';
       }
     }
 
@@ -722,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 12. UTILITATS I TOAST
+  // 12. UTILIDADES Y TOAST
   // =========================================================================
   let toastTimer = null;
   function showToast(message) {
@@ -750,23 +714,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 13. ESDEVENIMENTS (EVENT LISTENERS)
+  // 13. EVENTOS (EVENT LISTENERS)
   // =========================================================================
 
-  // Input de text
+  // Input de texto
   let debounceTimer = null;
   dom.textInput.addEventListener('input', () => {
     if (state.isLive) {
       performConversion();
     }
-    // Després de 1.5s d'inactivitat d'escriptura, desar a l'historial
+    // Tras 1.5s de inactividad de escritura, guardar en el historial
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       saveToHistory();
     }, 1500);
   });
 
-  // Toggle Live mode
+  // Alternar modo Tiempo Real (Live mode)
   dom.liveConvertToggle.addEventListener('change', (e) => {
     state.isLive = e.target.checked;
     dom.btnManualConvert.classList.toggle('hidden', state.isLive);
@@ -778,16 +742,16 @@ document.addEventListener('DOMContentLoaded', () => {
     saveToHistory();
   });
 
-  // Selector d'acció (Xifrar / Desxifrar)
+  // Selector de acción (Cifrar / Descifrar)
   dom.modeEncryptBtn.addEventListener('click', () => setMode('encrypt'));
   dom.modeDecryptBtn.addEventListener('click', () => setMode('decrypt'));
 
-  // Tabs d'algoritme
+  // Pestañas de algoritmo
   dom.tabBtns.forEach(btn => {
     btn.addEventListener('click', () => setAlgo(btn.dataset.algo));
   });
 
-  // Caesar Slider & Input sync
+  // Sincronización del deslizador y número César
   function handleCaesarChange(newVal) {
     let val = parseInt(newVal, 10);
     if (isNaN(val)) val = 3;
@@ -808,7 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.btnCaesarReset.addEventListener('click', () => handleCaesarChange(3));
   dom.btnCaesarBruteforce.addEventListener('click', openBruteforceModal);
 
-  // Morse Controls
+  // Controles Morse
   dom.btnMorsePlay.addEventListener('click', playMorseAudio);
   dom.btnMorseStop.addEventListener('click', stopMorseAudio);
 
@@ -820,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.morseFreqVal.textContent = e.target.value;
   });
 
-  // Inversion Radios
+  // Botones de opción de Inversión
   dom.inversionRadios.forEach(radio => {
     radio.addEventListener('change', (e) => {
       if (e.target.checked) {
@@ -830,101 +794,89 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Botó d'intercanvi (Swap)
+  // Botón de intercambio (Swap)
   dom.btnSwapIo.addEventListener('click', () => {
     const temp = dom.textInput.value;
     dom.textInput.value = dom.textOutput.value;
     dom.textOutput.value = temp;
 
-    // Canviar acció automàticament (de xifrar a desxifrar o viceversa)
+    // Cambiar acción automáticamente (de cifrar a descifrar o viceversa)
     setMode(state.currentAction === 'encrypt' ? 'decrypt' : 'encrypt');
-    showToast('S\'ha intercanviat l\'entrada i la sortida!');
+    showToast('¡Se han intercambiado la entrada y la salida!');
   });
 
-  // Netejar entrada
+  // Limpiar entrada
   dom.btnClearInput.addEventListener('click', () => {
     dom.textInput.value = '';
     performConversion();
     dom.textInput.focus();
-    showToast('Camp d\'entrada netejat.');
+    showToast('Campo de entrada borrado.');
   });
 
-  // Text d'exemple
+  // Texto de ejemplo
   dom.btnSampleInput.addEventListener('click', () => {
     if (state.currentAlgo === 'cesar') {
-      dom.textInput.value = 'Juli Cèsar va utilitzar aquest sistema militar a la Gàl·lia per enviar ordres secretes l\'any 50 aC.';
+      dom.textInput.value = 'Julio César utilizó este sistema militar en la Galia para enviar órdenes secretas en el año 50 a. C.';
     } else if (state.currentAlgo === 'morse') {
-      dom.textInput.value = 'SOS Transmissio d\'emergencia a 15 WPM';
+      dom.textInput.value = 'SOS Transmision de emergencia a 15 WPM';
     } else {
-      dom.textInput.value = 'Bon dia! La criptografia clàssica és fascinant.';
+      dom.textInput.value = '¡Buenos días! La criptografía clásica es fascinante.';
     }
     performConversion();
     saveToHistory();
-    showToast('Text d\'exemple carregat!');
+    showToast('¡Texto de ejemplo cargado!');
   });
 
-  // Enganxar del porta-retalls
+  // Pegar del portapapeles
   dom.btnPasteInput.addEventListener('click', async () => {
     try {
       const text = await navigator.clipboard.readText();
       dom.textInput.value = text;
       performConversion();
-      showToast('Text enganxat des del porta-retalls.');
+      showToast('Texto pegado desde el portapapeles.');
     } catch (err) {
-      showToast('No s\'ha pogut accedir al porta-retalls. Fes Ctrl+V directament.');
+      showToast('No se ha podido acceder al portapapeles. Usa Ctrl+V directamente.');
     }
   });
 
-  // Copiar sortida
+  // Copiar salida
   dom.btnCopyOutput.addEventListener('click', async () => {
     const text = dom.textOutput.value;
     if (!text) {
-      showToast('No hi ha text de sortida per copiar.');
+      showToast('No hay texto de salida para copiar.');
       return;
     }
     try {
       await navigator.clipboard.writeText(text);
       dom.btnCopyOutput.classList.add('copied');
       setTimeout(() => dom.btnCopyOutput.classList.remove('copied'), 2000);
-      showToast('Text copiat al porta-retalls!');
+      showToast('¡Texto copiado al portapapeles!');
       saveToHistory();
     } catch (err) {
-      showToast('Error en copiar al porta-retalls.');
+      showToast('Error al copiar al portapapeles.');
     }
   });
 
-  // Copiar botons de la vista Multi
-  document.querySelectorAll('.copy-multi-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const targetId = btn.dataset.target;
-      const elem = document.getElementById(targetId);
-      if (elem && elem.textContent) {
-        await navigator.clipboard.writeText(elem.textContent);
-        showToast('Text copiat!');
-      }
-    });
-  });
-
-  // Descarregar sortida (.txt)
+  // Descargar salida (.txt)
   dom.btnDownloadOutput.addEventListener('click', () => {
     const text = dom.textOutput.value;
     if (!text) {
-      showToast('El resultat és buit, no es pot descarregar.');
+      showToast('El resultado está vacío, no se puede descargar.');
       return;
     }
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `cifratge_${state.currentAlgo}_${Date.now()}.txt`;
+    a.download = `cifrado_${state.currentAlgo}_${Date.now()}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('Fitxer descarregat!');
+    showToast('¡Archivo descargado!');
   });
 
-  // Modals & Drawers triggers
+  // Disparadores de modales y paneles desplegables
   dom.btnOpenMorseModal.addEventListener('click', () => {
     dom.modalMorse.classList.remove('hidden');
   });
@@ -948,19 +900,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   dom.btnClearHistory.addEventListener('click', clearHistory);
 
-  // Tancar modals en fer clic fora de la finestra
+  // Cerrar modales al hacer clic fuera de la ventana
   window.addEventListener('click', (e) => {
     if (e.target === dom.modalBruteforce) dom.modalBruteforce.classList.add('hidden');
     if (e.target === dom.modalMorse) dom.modalMorse.classList.add('hidden');
   });
 
-  // Tancar amb tecla Escape
+  // Cerrar con la tecla Escape
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModals();
   });
 
   // =========================================================================
-  // 14. INICIALITZACIÓ
+  // 14. INICIALIZACIÓN
   // =========================================================================
   initCaesarAlphabetStrip();
   populateMorseTable();
@@ -968,26 +920,26 @@ document.addEventListener('DOMContentLoaded', () => {
   performConversion();
 
   // =========================================================================
-  // 15. SISTEMA DE REGISTRE DE VISITANTS I COMPTADOR EN TEMPS REAL (/dades)
+  // 15. SISTEMA DE REGISTRO DE VISITANTES Y CONTADOR EN TIEMPO REAL (/dades)
   // =========================================================================
   const liveVisitsCountElem = document.getElementById('live-visits-count');
 
   async function registrarVisita() {
-    // 1. Obtenir o crear l'identificador d'usuari
+    // 1. Obtener o crear el identificador de usuario
     let usuari = localStorage.getItem('cifratge_nom_usuari');
     if (!usuari) {
-      usuari = `Usuari-${Math.floor(1000 + Math.random() * 9000)}`;
+      usuari = `Usuario-${Math.floor(1000 + Math.random() * 9000)}`;
       localStorage.setItem('cifratge_nom_usuari', usuari);
     }
 
-    // 2. Detectar geolocalització (país, regió, ciutat)
+    // 2. Detectar geolocalización (país, región, ciudad)
     let geo = {
-      pais: 'Espanya',
-      regio: 'Catalunya',
-      ciutat: 'Barcelona'
+      pais: 'España',
+      regio: 'Madrid',
+      ciutat: 'Madrid'
     };
 
-    // Intentar geolocalització per IP pública client-side amb fallback ràpid
+    // Intentar geolocalización por IP pública client-side con fallback rápido
     try {
       const geoResp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
       if (geoResp.ok) {
@@ -1007,7 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {}
     }
 
-    // 3. Enviar dades al servidor HTTP local (/api/visita)
+    // 3. Enviar datos al servidor HTTP local (/api/visita)
     try {
       const resp = await fetch('/api/visita', {
         method: 'POST',
@@ -1028,7 +980,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (err) {
-      // Mode estàtic
+      // Modo estático
     }
   }
 
@@ -1044,8 +996,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
-  // Executar registre inicial i poller en temps real
+  // Ejecutar registro inicial y consulta periódica en tiempo real
   registrarVisita();
   setInterval(actualitzarComptadorVisites, 4000);
 });
-

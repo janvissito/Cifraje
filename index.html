@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Aplicació web moderna i interactiva per xifrar i desxifrar textos utilitzant Inversió de text, Xifratge Cèsar i Codi Morse amb reproducció d'àudio Web Audio API.">
+    content="Aplicación web moderna e interactiva para cifrar y descifrar textos utilizando Inversión de texto, Cifrado César y Código Morse con reproducción de audio Web Audio API.">
   <meta name="theme-color" content="#0b0f19">
-  <title>Cifratge Web | Eina Interactiva de Xifratge i Codi Morse</title>
+  <title>Cifrado Web | Herramienta De Cifrado.</title>
   <link rel="icon" type="image/png" href="logoo.png">
 
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -39,38 +39,27 @@
           </svg>
         </div>
         <div class="brand-text">
-          <h1 class="brand-title">Cifratge <span class="gradient-text">Web</span>[BETA]</h1>
-          <p class="brand-subtitle">Suite de xifratge clàssic i codificació al navegador</p>
+          <h1 class="brand-title">Cifrado <span class="gradient-text">Web</span>[BETA]</h1>
+          <p class="brand-subtitle">La mejor heramienta de cifrado.</p>
         </div>
       </div>
 
       <div class="header-actions">
         <!-- Live Visitor Counter Badge -->
-        <div id="live-visits-pill" class="live-counter-pill" title="Comptador de visites en temps real">
+        <div id="live-visits-pill" class="live-counter-pill" title="Contador de visitas en tiempo real">
           <span class="live-counter-dot"></span>
-          <span class="live-counter-label">Visites:</span>
+          <span class="live-counter-label">Visitas:</span>
           <strong id="live-visits-count" class="live-counter-num">1</strong>
         </div>
 
-        <a href="/dades" class="btn btn-secondary btn-sm" title="Veure el registre de visitants a /dades">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-            </path>
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-          </svg>
-          <span>/dades</span>
-        </a>
-
-        <button id="btn-open-morse-modal" class="btn btn-secondary btn-sm" title="Consultar taula de codi Morse">
+        <button id="btn-open-morse-modal" class="btn btn-secondary btn-sm" title="Consultar tabla de código Morse">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
-          <span>Taula Morse</span>
+          <span>Tabla Morse</span>
         </button>
-        <button id="btn-open-history" class="btn btn-secondary btn-sm" title="Historial de conversions">
+        <button id="btn-open-history" class="btn btn-secondary btn-sm" title="Historial de conversiones">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"></circle>
             <polyline points="12 6 12 12 16 14"></polyline>
@@ -86,30 +75,24 @@
     <div class="container">
 
       <!-- Algorithm Navigation Tabs -->
-      <nav class="algo-tabs" role="tablist" aria-label="Algoritmes de xifratge">
+      <nav class="algo-tabs" role="tablist" aria-label="Algoritmos de cifrado">
         <button id="tab-cesar" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-workbench"
           data-algo="cesar">
           <span class="tab-icon">🏛️</span>
-          <span class="tab-label">Xifratge Cèsar</span>
-          <span class="tab-tag">Clàssic</span>
+          <span class="tab-label">Cifrado César</span>
+          <span class="tab-tag">Clásico</span>
         </button>
         <button id="tab-morse" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
           data-algo="morse">
           <span class="tab-icon">📡</span>
-          <span class="tab-label">Codi Morse</span>
-          <span class="tab-tag">So & Llum</span>
+          <span class="tab-label">Código Morse</span>
+          <span class="tab-tag">Sonido y Luz</span>
         </button>
         <button id="tab-inversio" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
           data-algo="inversio">
           <span class="tab-icon">🔄</span>
-          <span class="tab-label">Inversió de Text</span>
-          <span class="tab-tag">Involutiu</span>
-        </button>
-        <button id="tab-multi" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-workbench"
-          data-algo="multi">
-          <span class="tab-icon">⚡</span>
-          <span class="tab-label">Multixifratge</span>
-          <span class="tab-tag">Tots 3</span>
+          <span class="tab-label">Inversión de Texto</span>
+          <span class="tab-tag">Involutivo</span>
         </button>
       </nav>
 
@@ -119,41 +102,41 @@
         <!-- Algorithm Info Bar -->
         <div class="algo-info-bar">
           <div class="algo-info-text">
-            <h2 id="algo-current-title" class="algo-title">Xifratge Cèsar</h2>
+            <h2 id="algo-current-title" class="algo-title">Cifrado César</h2>
             <p id="algo-current-desc" class="algo-description">
-              Substitueix cada lletra per una altra situada a un nombre determinat de posicions a l'alfabet.
+              Sustituye cada letra por otra situada a un número determinado de posiciones en el alfabeto.
             </p>
           </div>
           <div class="algo-badges">
-            <span id="algo-badge-feature" class="pill-badge">Aritmètica Modular (mod 26)</span>
-            <span class="pill-badge pill-safe">100% Local al navegador</span>
+            <span id="algo-badge-feature" class="pill-badge">Aritmética Modular (mod 26)</span>
+            <span class="pill-badge pill-safe">100% Local en el navegador</span>
           </div>
         </div>
 
-        <!-- Mode Selector: Xifrar / Desxifrar & Live mode -->
+        <!-- Mode Selector: Cifrar / Descifrar & Live mode -->
         <div class="action-bar">
-          <div class="mode-toggle-group" role="group" aria-label="Mode d'operació">
+          <div class="mode-toggle-group" role="group" aria-label="Modo de operación">
             <button id="mode-encrypt" class="mode-btn active" data-action="encrypt">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
-              <span>Xifrar (Codificar)</span>
+              <span>Cifrar (Codificar)</span>
             </button>
             <button id="mode-decrypt" class="mode-btn" data-action="decrypt">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
               </svg>
-              <span>Desxifrar (Decodificar)</span>
+              <span>Descifrar (Decodificar)</span>
             </button>
           </div>
 
           <div class="action-utilities">
-            <label class="toggle-switch" title="Actualitzar automàticament mentre escrius">
+            <label class="toggle-switch" title="Actualizar automáticamente mientras escribes">
               <input type="checkbox" id="live-convert-toggle" checked>
               <span class="slider"></span>
-              <span class="toggle-text">Temps real</span>
+              <span class="toggle-text">Tiempo real</span>
             </label>
           </div>
         </div>
@@ -166,7 +149,7 @@
               <div class="param-title-wrap">
                 <span class="param-icon">🔢</span>
                 <label for="caesar-shift-slider" class="param-label">
-                  Desplaçament (<span class="code-font">k</span>):
+                  Desplazamiento (<span class="code-font">k</span>):
                   <strong id="caesar-shift-value" class="highlight-val">3</strong>
                 </label>
               </div>
@@ -174,10 +157,9 @@
                 <button id="btn-caesar-minus" class="btn-chip" title="Restar 1">-1</button>
                 <button id="btn-caesar-plus" class="btn-chip" title="Sumar 1">+1</button>
                 <button id="btn-caesar-rot13" class="btn-chip" title="Aplicar ROT13 (k=13)">ROT-13</button>
-                <button id="btn-caesar-reset" class="btn-chip" title="Reiniciar a 3">Per defecte (3)</button>
-                <button id="btn-caesar-bruteforce" class="btn-chip btn-chip-accent"
-                  title="Veure tots els 25 desplaçaments">
-                  🔍 Força Bruta
+                <button id="btn-caesar-reset" class="btn-chip" title="Restablecer a 3">Por defecto (3)</button>
+                <button id="btn-caesar-bruteforce" class="btn-chip btn-chip-accent" title="Ver los 25 desplazamientos">
+                  🔍 Fuerza Bruta
                 </button>
               </div>
             </div>
@@ -185,15 +167,15 @@
             <div class="slider-row">
               <span class="slider-min">1</span>
               <input type="range" id="caesar-shift-slider" min="1" max="25" value="3" class="custom-range"
-                aria-label="Desplaçament del xifratge Cèsar">
+                aria-label="Desplazamiento del cifrado César">
               <span class="slider-max">25</span>
               <input type="number" id="caesar-shift-number" min="1" max="25" value="3" class="num-input"
-                aria-label="Valor numèric de desplaçament">
+                aria-label="Valor numérico de desplazamiento">
             </div>
 
             <!-- Interactive Caesar Alphabet Strip -->
-            <div class="caesar-strip-container" title="Visualització del mapeig de l'alfabet">
-              <div class="strip-label">Mapeig d'abecedari:</div>
+            <div class="caesar-strip-container" title="Visualización del mapeo del alfabeto">
+              <div class="strip-label">Mapeo del abecedario:</div>
               <div class="alphabet-track-wrapper">
                 <div id="alphabet-original-strip" class="alphabet-strip alphabet-plain"></div>
                 <div class="alphabet-arrow">⬇</div>
@@ -206,42 +188,43 @@
           <div id="params-morse" class="algo-params-panel hidden">
             <div class="morse-controls-bar">
               <div class="morse-playback-controls">
-                <button id="btn-morse-play" class="btn btn-primary" title="Reproduir codi Morse en àudio">
+                <button id="btn-morse-play" class="btn btn-primary" title="Reproducir código Morse en audio">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                   </svg>
-                  <span>Reproduir Àudio</span>
+                  <span>Reproducir Audio</span>
                 </button>
-                <button id="btn-morse-stop" class="btn btn-secondary hidden" title="Aturar reproducció">
+                <button id="btn-morse-stop" class="btn btn-secondary hidden" title="Detener reproducción">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <rect x="6" y="6" width="12" height="12"></rect>
                   </svg>
-                  <span>Aturar</span>
+                  <span>Detener</span>
                 </button>
 
                 <!-- Visual Blinker LED -->
-                <div class="morse-light-container" title="Indicador de transmissió lumínica">
+                <div class="morse-light-container" title="Indicador de transmisión lumínica">
                   <div id="morse-led" class="morse-led"></div>
-                  <span class="morse-led-label">Senyal òptic</span>
+                  <span class="morse-led-label">Señal óptica</span>
                 </div>
               </div>
 
               <!-- Speed and Tone settings -->
               <div class="morse-audio-settings">
                 <div class="audio-setting-item">
-                  <label for="morse-wpm-slider">Velocitat: <span id="morse-wpm-val">15</span> WPM</label>
+                  <label for="morse-wpm-slider">Velocidad: <span id="morse-wpm-val">15</span> WPM</label>
                   <input type="range" id="morse-wpm-slider" min="5" max="35" value="15" class="custom-range range-sm">
                 </div>
                 <div class="audio-setting-item">
-                  <label for="morse-freq-slider">Freqüència: <span id="morse-freq-val">650</span> Hz</label>
+                  <label for="morse-freq-slider">Frecuencia: <span id="morse-freq-val">650</span> Hz</label>
                   <input type="range" id="morse-freq-slider" min="400" max="950" step="25" value="650"
                     class="custom-range range-sm">
                 </div>
               </div>
             </div>
             <div class="morse-tip">
-              ℹ️ <em>Nota:</em> La codificació normalitza automàticament accents i caràcters diacrítics (Unicode NFKD).
-              Paraules separades per <code>/</code> i caràcters per espai.
+              ℹ️ <em>Nota:</em> La codificación normaliza automáticamente acentos y caracteres diacríticos (Unicode
+              NFKD).
+              Palabras separadas por <code>/</code> y caracteres por espacio.
             </div>
           </div>
 
@@ -249,33 +232,26 @@
           <div id="params-inversio" class="algo-params-panel hidden">
             <div class="inversion-options">
               <span class="param-icon">🔃</span>
-              <span class="param-label">Tipus d'inversió:</span>
+              <span class="param-label">Tipo de inversión:</span>
               <div class="radio-options-group">
                 <label class="radio-chip">
                   <input type="radio" name="inversion-type" value="full" checked>
-                  <span>Inversió completa (tot el text)</span>
+                  <span>Inversión completa (todo el texto)</span>
                 </label>
                 <label class="radio-chip">
                   <input type="radio" name="inversion-type" value="words">
-                  <span>Mantenir ordre de paraules (invertir caràcters de cada mot)</span>
+                  <span>Mantener orden de palabras (invertir caracteres de cada palabra)</span>
                 </label>
                 <label class="radio-chip">
                   <input type="radio" name="inversion-type" value="word-order">
-                  <span>Invertir només l'ordre de les paraules</span>
+                  <span>Invertir solo el orden de las palabras</span>
                 </label>
               </div>
             </div>
             <div class="morse-tip">
-              ℹ️ <em>Propietat involutiva:</em> Aplicar la inversió al resultat desxifra el text exactament al seu estat
+              ℹ️ <em>Propiedad involutiva:</em> Aplicar la inversión al resultado descifra el texto exactamente a su
+              estado
               original ($f(f(x)) = x$).
-            </div>
-          </div>
-
-          <!-- Multi-cipher comparison notice -->
-          <div id="params-multi" class="algo-params-panel hidden">
-            <div class="multi-notice">
-              ⚡ <strong>Mode Multixifratge:</strong> Introdueix un text i visualitza instantàniament com es xifra o
-              desxifra amb els tres algoritmes alhora.
             </div>
           </div>
         </div>
@@ -288,23 +264,23 @@
             <div class="io-header">
               <div class="io-title-wrap">
                 <span class="io-badge input-badge">Entrada</span>
-                <h3 id="input-label" class="io-title">Text Original</h3>
+                <h3 id="input-label" class="io-title">Texto Original</h3>
               </div>
               <div class="io-actions">
-                <button id="btn-paste-input" class="btn-icon" title="Enganxar del porta-retalls">
+                <button id="btn-paste-input" class="btn-icon" title="Pegar del portapapeles">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                   </svg>
                 </button>
-                <button id="btn-sample-input" class="btn-icon" title="Carregar text d'exemple">
+                <button id="btn-sample-input" class="btn-icon" title="Cargar texto de ejemplo">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="16" x2="12" y2="12"></line>
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                   </svg>
                 </button>
-                <button id="btn-clear-input" class="btn-icon btn-icon-danger" title="Netejar text d'entrada">
+                <button id="btn-clear-input" class="btn-icon btn-icon-danger" title="Limpiar texto de entrada">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -314,25 +290,25 @@
             </div>
 
             <div class="io-textarea-wrap">
-              <textarea id="text-input" class="io-textarea" placeholder="Escriu o enganxa el text aquí..."
-                spellcheck="false" rows="7">Hola, món! Aquest és un missatge secret.</textarea>
+              <textarea id="text-input" class="io-textarea" placeholder="Escribe o pega el texto aquí..."
+                spellcheck="false" rows="7">Inserte texto.</textarea>
             </div>
 
             <div class="io-footer">
               <div class="text-stats">
-                <span id="input-chars-count">0 caràcters</span>
+                <span id="input-chars-count">0 caracteres</span>
                 <span class="dot-separator">•</span>
-                <span id="input-words-count">0 paraules</span>
+                <span id="input-words-count">0 palabras</span>
               </div>
               <button id="btn-manual-convert" class="btn btn-primary btn-sm hidden">
-                Executar Conversió
+                Ejecutar Conversión
               </button>
             </div>
           </div>
 
           <!-- Swap & Direction Divider -->
           <div class="swap-divider">
-            <button id="btn-swap-io" class="btn-swap" title="Intercanviar entrada i sortida">
+            <button id="btn-swap-io" class="btn-swap" title="Intercambiar entrada y salida">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="17 1 21 5 17 9"></polyline>
                 <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
@@ -346,18 +322,18 @@
           <div class="io-card io-card-output">
             <div class="io-header">
               <div class="io-title-wrap">
-                <span class="io-badge output-badge">Sortida</span>
-                <h3 id="output-label" class="io-title">Text Resultant</h3>
+                <span class="io-badge output-badge">Salida</span>
+                <h3 id="output-label" class="io-title">Texto Resultante</h3>
               </div>
               <div class="io-actions">
-                <button id="btn-copy-output" class="btn-icon btn-icon-copy" title="Copiar al porta-retalls">
+                <button id="btn-copy-output" class="btn-icon btn-icon-copy" title="Copiar al portapapeles">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <span class="btn-tooltip">Copiat!</span>
+                  <span class="btn-tooltip">¡Copiado!</span>
                 </button>
-                <button id="btn-download-output" class="btn-icon" title="Descarregar com a fitxer de text">
+                <button id="btn-download-output" class="btn-icon" title="Descargar como archivo de texto">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
@@ -369,107 +345,71 @@
 
             <div class="io-textarea-wrap">
               <textarea id="text-output" class="io-textarea code-font output-textarea"
-                placeholder="El resultat apareixerà aquí..." readonly rows="7"></textarea>
+                placeholder="El resultado aparecerá aquí..." readonly rows="7"></textarea>
             </div>
 
             <div class="io-footer">
               <div class="text-stats">
-                <span id="output-chars-count">0 caràcters</span>
+                <span id="output-chars-count">0 caracteres</span>
                 <span class="dot-separator">•</span>
-                <span id="output-words-count">0 paraules</span>
+                <span id="output-words-count">0 palabras</span>
               </div>
               <div class="output-status-indicator">
                 <span class="status-pulse"></span>
-                <span id="status-text">Llest</span>
+                <span id="status-text">Listo</span>
               </div>
             </div>
           </div>
 
-        </div>
-
-        <!-- Multi-cipher comparison view (Visible when Tab 4 is active) -->
-        <div id="multi-comparison-view" class="multi-grid hidden">
-          <!-- Card Cesar -->
-          <div class="multi-result-card">
-            <div class="multi-card-header">
-              <span class="multi-icon">🏛️</span>
-              <h4 class="multi-title">Xifratge Cèsar (+3)</h4>
-              <button class="btn-icon-xs copy-multi-btn" data-target="multi-cesar-val" title="Copiar">
-                📋
-              </button>
-            </div>
-            <div id="multi-cesar-val" class="multi-code-box code-font"></div>
-          </div>
-
-          <!-- Card Morse -->
-          <div class="multi-result-card">
-            <div class="multi-card-header">
-              <span class="multi-icon">📡</span>
-              <h4 class="multi-title">Codi Morse</h4>
-              <button class="btn-icon-xs copy-multi-btn" data-target="multi-morse-val" title="Copiar">
-                📋
-              </button>
-            </div>
-            <div id="multi-morse-val" class="multi-code-box code-font"></div>
-          </div>
-
-          <!-- Card Inversió -->
-          <div class="multi-result-card">
-            <div class="multi-card-header">
-              <span class="multi-icon">🔄</span>
-              <h4 class="multi-title">Inversió de Text</h4>
-              <button class="btn-icon-xs copy-multi-btn" data-target="multi-inversio-val" title="Copiar">
-                📋
-              </button>
-            </div>
-            <div id="multi-inversio-val" class="multi-code-box code-font"></div>
-          </div>
         </div>
 
       </section>
 
       <!-- Educational Algorithm Details Section -->
       <section class="info-section">
-        <h3 class="section-title">Com funciona cada algoritme?</h3>
+        <h3 class="section-title">¿Cómo funciona cada algoritmo?</h3>
         <div class="cards-deck">
           <div class="info-card">
             <div class="info-card-icon">🏛️</div>
-            <h4 class="info-card-title">Xifratge Cèsar</h4>
+            <h4 class="info-card-title">Cifrado César</h4>
             <p class="info-card-text">
-              Substitució monoalfabètica històrica emprada per Juli Cèsar. Cada lletra es desplaça $k$ posicions mòdul
+              Sustitución monoalfabética histórica empleada por Julio César. Cada letra se desplaza $k$ posiciones
+              módulo
               26:
             </p>
             <div class="formula-box">
               C = (P + k) mod 26
             </div>
-            <p class="info-card-sub">Manté majúscules, minúscules, espais i signes intactes.</p>
+            <p class="info-card-sub">Mantiene mayúsculas, minúsculas, espacios y signos intactos.</p>
           </div>
 
           <div class="info-card">
             <div class="info-card-icon">📡</div>
-            <h4 class="info-card-title">Codi Morse</h4>
+            <h4 class="info-card-title">Código Morse</h4>
             <p class="info-card-text">
-              Codificació telegràfica binària de punts (<span class="code-font">.</span>) i ratlles (<span
+              Codificación telegráfica binaria de puntos (<span class="code-font">.</span>) y rayas (<span
                 class="code-font">-</span>).
             </p>
             <div class="formula-box">
-              Lletres separades per ' ' i paraules per ' / '
+              Letras separadas por ' ' y palabras por ' / '
             </div>
-            <p class="info-card-sub">Descomposició NFKD automàtica per transformar caràcters com <code>è, à, ç</code> en
-              lletres base Morse.</p>
+            <p class="info-card-sub">Descomposición NFKD automática para transformar caracteres como
+              <code>é, á, ñ, ç</code> en
+              letras base Morse.
+            </p>
           </div>
 
           <div class="info-card">
             <div class="info-card-icon">🔄</div>
-            <h4 class="info-card-title">Inversió de Text</h4>
+            <h4 class="info-card-title">Inversión de Texto</h4>
             <p class="info-card-text">
-              Reverteix completament la cadena de caràcters d'extrem a extrem (<span
-                class="code-font">text[::-1]</span>).
+              Invierte completamente la cadena de caracteres de extremo a extremo (<span
+                class="code-font">texto[::-1]</span>).
             </p>
             <div class="formula-box">
-              f(f(x)) = x (Funció involutiva)
+              f(f(x)) = x (Función involutiva)
             </div>
-            <p class="info-card-sub">L'operació de xifrar i desxifrar és estrictament idèntica i simètrica.</p>
+            <p class="info-card-sub">La operación de cifrar y descifrar es estrictamente idéntica y simétrica.</p>
           </div>
         </div>
       </section>
@@ -484,14 +424,14 @@
       <div class="modal-header">
         <div class="modal-title-wrap">
           <span class="modal-icon">🔍</span>
-          <h3 id="modal-bf-title" class="modal-title">Desxifratge Cèsar per Força Bruta</h3>
+          <h3 id="modal-bf-title" class="modal-title">Descifrado César por Fuerza Bruta</h3>
         </div>
-        <button id="btn-close-bf-modal" class="modal-close" aria-label="Tancar finestra">&times;</button>
+        <button id="btn-close-bf-modal" class="modal-close" aria-label="Cerrar ventana">&times;</button>
       </div>
       <div class="modal-body">
         <p class="modal-hint">
-          S'estan provant tots els 25 desplaçaments possibles sobre el text actual. Fes clic sobre qualsevol opció per
-          carregar-la immediatament com a resultat!
+          Se están probando los 25 desplazamientos posibles sobre el texto actual. ¡Haz clic sobre cualquier opción para
+          cargarla inmediatamente como resultado!
         </p>
         <div id="bruteforce-results-list" class="bruteforce-list"></div>
       </div>
@@ -505,15 +445,15 @@
       <div class="modal-header">
         <div class="modal-title-wrap">
           <span class="modal-icon">📡</span>
-          <h3 id="modal-morse-title" class="modal-title">Taula Oficial de Codi Morse Internacional</h3>
+          <h3 id="modal-morse-title" class="modal-title">Tabla Oficial de Código Morse Internacional</h3>
         </div>
-        <button id="btn-close-morse-modal" class="modal-close" aria-label="Tancar finestra">&times;</button>
+        <button id="btn-close-morse-modal" class="modal-close" aria-label="Cerrar ventana">&times;</button>
       </div>
       <div class="modal-body">
         <div class="morse-table-container">
           <!-- Letters A-Z -->
           <div class="morse-category">
-            <h4 class="cat-title">Lletres (A-Z)</h4>
+            <h4 class="cat-title">Letras (A-Z)</h4>
             <div id="morse-letters-grid" class="morse-grid"></div>
           </div>
           <!-- Numbers 0-9 -->
@@ -523,7 +463,7 @@
           </div>
           <!-- Punctuation -->
           <div class="morse-category">
-            <h4 class="cat-title">Signes de puntuació</h4>
+            <h4 class="cat-title">Signos de puntuación</h4>
             <div id="morse-symbols-grid" class="morse-grid"></div>
           </div>
         </div>
@@ -532,21 +472,21 @@
   </div>
 
   <!-- Drawer: History -->
-  <aside id="history-drawer" class="drawer hidden" aria-label="Historial de conversions">
+  <aside id="history-drawer" class="drawer hidden" aria-label="Historial de conversiones">
     <div class="drawer-header">
       <div class="drawer-title-wrap">
         <span class="drawer-icon">📜</span>
-        <h3 class="drawer-title">Historial d'Activitat</h3>
+        <h3 class="drawer-title">Historial de Actividad</h3>
       </div>
-      <button id="btn-close-history" class="modal-close" aria-label="Tancar historial">&times;</button>
+      <button id="btn-close-history" class="modal-close" aria-label="Cerrar historial">&times;</button>
     </div>
     <div class="drawer-toolbar">
-      <span id="history-count-text">0 elements guardats</span>
-      <button id="btn-clear-history" class="btn-chip btn-chip-danger">Buidar</button>
+      <span id="history-count-text">0 elementos guardados</span>
+      <button id="btn-clear-history" class="btn-chip btn-chip-danger">Vaciar</button>
     </div>
     <div id="history-list" class="drawer-content">
       <div class="empty-history-state">
-        <p>No hi ha conversions recents enregistrades.</p>
+        <p>No hay conversiones recientes registradas.</p>
       </div>
     </div>
   </aside>
@@ -554,19 +494,19 @@
   <!-- Global Toast Notification -->
   <div id="toast-notification" class="toast" role="status" aria-live="polite">
     <span id="toast-icon" class="toast-icon">✓</span>
-    <span id="toast-message" class="toast-message">Operació completada</span>
+    <span id="toast-message" class="toast-message">Operación completada</span>
   </div>
 
   <!-- Footer -->
   <footer class="app-footer">
     <div class="footer-container">
-      <p>Desenvolupat amb HTML5, CSS3 pur i JavaScript ES6+. Totalment autònom al navegador.</p>
+      <p>Desarrollado con HTML5, CSS3 puro y JavaScript ES6+. Totalmente autónomo en el navegador.</p>
       <div class="footer-links">
-        <span>🔒 Processat 100% local</span>
+        <span>🔒 Procesamiento 100% local</span>
         <span>•</span>
-        <span>⚡ Sense dependències externes</span>
+        <span>⚡ Sin dependencias externas</span>
         <span>•</span>
-        <span>🏛️ Cèsar • 📡 Morse • 🔄 Inversió</span>
+        <span>🏛️ César • 📡 Morse • 🔄 Inversión</span>
       </div>
     </div>
   </footer>

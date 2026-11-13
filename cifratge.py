@@ -1,37 +1,37 @@
 #!/usr/bin/env python3
 """
-Mòdul de xifratge i desxifratge de textos.
-Algoritmes inclosos:
-  1. Inversió de text (Reverse)
-  2. Xifratge Cèsar (Caesar Cipher)
-  3. Codi Morse (Morse Code)
+Módulo de cifrado y descifrado de textos.
+Algoritmos incluidos:
+  1. Inversión de texto (Reverse)
+  2. Cifrado César (Caesar Cipher)
+  3. Código Morse (Morse Code)
 """
 
 import unicodedata
 
 # -----------------------------------------------------------------------------
-# 1. INVERSIÓ DE TEXT
+# 1. INVERSIÓN DE TEXTO
 # -----------------------------------------------------------------------------
 
 def xifrar_inversio(text: str) -> str:
-    """Inverteix l'ordre dels caràcters del text."""
+    """Invierte el orden de los caracteres del texto."""
     return text[::-1]
 
 
 def desxifrar_inversio(text: str) -> str:
-    """Desxifra un text invertit (la inversió és reversible per ella mateixa)."""
+    """Descifra un texto invertido (la inversión es reversible por sí misma)."""
     return text[::-1]
 
 
 # -----------------------------------------------------------------------------
-# 2. XIFRATGE CÈSAR
+# 2. CIFRADO CÉSAR
 # -----------------------------------------------------------------------------
 
 def xifrar_cesar(text: str, desplacament: int = 3) -> str:
     """
-    Aplica el xifratge Cèsar desplaçant cada lletra de l'alfabet
-    un nombre determinat de posicions. Manté majúscules/minúscules
-    i caràcters que no siguin lletres.
+    Aplica el cifrado César desplazando cada letra del alfabeto
+    un número determinado de posiciones. Mantiene mayúsculas/minúsculas
+    y caracteres que no sean letras.
     """
     resultat = []
     for car in text:
@@ -47,12 +47,12 @@ def xifrar_cesar(text: str, desplacament: int = 3) -> str:
 
 
 def desxifrar_cesar(text: str, desplacament: int = 3) -> str:
-    """Desxifra un text xifrat amb Cèsar aplicant el desplaçament en sentit invers."""
+    """Descifra un texto cifrado con César aplicando el desplazamiento en sentido inverso."""
     return xifrar_cesar(text, -desplacament)
 
 
 # -----------------------------------------------------------------------------
-# 3. CODI MORSE
+# 3. CÓDIGO MORSE
 # -----------------------------------------------------------------------------
 
 DICCIONARI_MORSE = {
@@ -70,12 +70,12 @@ DICCIONARI_MORSE = {
     '"': '.-..-.', '$': '...-..-', '@': '.--.-.'
 }
 
-# Diccionari invers per desxifrar (Morse -> Text)
+# Diccionario inverso para descifrar (Morse -> Texto)
 DICCIONARI_MORSE_INVERS = {codi: lletra for lletra, codi in DICCIONARI_MORSE.items()}
 
 
 def normalitzar_text_morse(text: str) -> str:
-    """Elimina accents i diacrítics per facilitar la conversió a codi Morse."""
+    """Elimina acentos y diacríticos para facilitar la conversión a código Morse."""
     descomposat = unicodedata.normalize('NFKD', text)
     sense_accents = ''.join(c for c in descomposat if not unicodedata.combining(c))
     return sense_accents.upper()
@@ -83,8 +83,8 @@ def normalitzar_text_morse(text: str) -> str:
 
 def xifrar_morse(text: str) -> str:
     """
-    Converteix un text a codi Morse.
-    Les lletres es separen amb un espai (' ') i les paraules amb una barra (' / ').
+    Convierte un texto a código Morse.
+    Las letras se separan con un espacio (' ') y las palabras con una barra (' / ').
     """
     text_preparat = normalitzar_text_morse(text)
     paraules = text_preparat.split(' ')
@@ -99,12 +99,12 @@ def xifrar_morse(text: str) -> str:
 
 def desxifrar_morse(codi_morse: str) -> str:
     """
-    Converteix codi Morse a text alfanumèric.
-    Accepta ' / ' com a separador de paraules i ' ' com a separador de lletres.
+    Convierte código Morse a texto alfanumérico.
+    Acepta ' / ' como separador de palabras y ' ' como separador de letras.
     """
     codi_net = codi_morse.strip()
     
-    # Gestionar separador de paraules (' / ' o triple espai)
+    # Gestionar separador de palabras (' / ' o triple espacio)
     if ' / ' in codi_net:
         paraules = codi_net.split(' / ')
     elif '/' in codi_net:
@@ -124,68 +124,68 @@ def desxifrar_morse(codi_morse: str) -> str:
 
 
 # -----------------------------------------------------------------------------
-# MENÚ INTERACTIU
+# MENÚ INTERACTIVO
 # -----------------------------------------------------------------------------
 
 def menu_principal():
-    """Interfície de línia de comandes per provar els algoritmes."""
+    """Interfaz de línea de comandos para probar los algoritmos."""
     while True:
         print("\n" + "=" * 45)
-        print("          EINA DE XIFRATGE I DESXIFRATGE     ")
+        print("          HERRAMIENTA DE CIFRADO Y DESCIFRADO     ")
         print("=" * 45)
-        print("1. Inversió de text")
-        print("2. Xifratge Cèsar")
-        print("3. Codi Morse")
-        print("4. Sortir")
+        print("1. Inversión de texto")
+        print("2. Cifrado César")
+        print("3. Código Morse")
+        print("4. Salir")
         print("=" * 45)
 
-        opcio = input("Tria una opció (1-4): ").strip()
+        opcio = input("Elige una opción (1-4): ").strip()
 
         if opcio == "4":
-            print("Fins aviat!")
+            print("¡Hasta pronto!")
             break
 
         if opcio not in ("1", "2", "3"):
-            print("Opció no vàlida. Torna-ho a provar.")
+            print("Opción no válida. Inténtalo de nuevo.")
             continue
 
-        print("\n--- Acció ---")
-        print("1. Xifrar")
-        print("2. Desxifrar")
-        accio = input("Tria una acció (1-2): ").strip()
+        print("\n--- Acción ---")
+        print("1. Cifrar")
+        print("2. Descifrar")
+        accio = input("Elige una acción (1-2): ").strip()
 
         if accio not in ("1", "2"):
-            print("Acció no vàlida.")
+            print("Acción no válida.")
             continue
 
-        text = input("\nIntrodueix el text: ")
+        text = input("\nIntroduce el texto: ")
 
         if opcio == "1":
             if accio == "1":
                 res = xifrar_inversio(text)
-                print(f"\n[Resultat Xifrat]: {res}")
+                print(f"\n[Resultado Cifrado]: {res}")
             else:
                 res = desxifrar_inversio(text)
-                print(f"\n[Resultat Desxifrat]: {res}")
+                print(f"\n[Resultado Descifrado]: {res}")
 
         elif opcio == "2":
-            desp_str = input("Introdueix el desplaçament (per defecte 3): ").strip()
+            desp_str = input("Introduce el desplazamiento (por defecto 3): ").strip()
             desplacament = int(desp_str) if desp_str.isdigit() or (desp_str.startswith('-') and desp_str[1:].isdigit()) else 3
 
             if accio == "1":
                 res = xifrar_cesar(text, desplacament)
-                print(f"\n[Resultat Xifrat (Cèsar +{desplacament})]: {res}")
+                print(f"\n[Resultado Cifrado (César +{desplacament})]: {res}")
             else:
                 res = desxifrar_cesar(text, desplacament)
-                print(f"\n[Resultat Desxifrat (Cèsar -{desplacament})]: {res}")
+                print(f"\n[Resultado Descifrado (César -{desplacament})]: {res}")
 
         elif opcio == "3":
             if accio == "1":
                 res = xifrar_morse(text)
-                print(f"\n[Resultat Morse]: {res}")
+                print(f"\n[Resultado Morse]: {res}")
             else:
                 res = desxifrar_morse(text)
-                print(f"\n[Resultat Desxifrat]: {res}")
+                print(f"\n[Resultado Descifrado]: {res}")
 
 
 if __name__ == "__main__":
